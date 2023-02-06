@@ -1,0 +1,140 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;500;700;900&display=swap');
+
+/** Breaking Points */
+$sm-breakpoint-max: 768px;
+$sm-breakpoint-min: 769px;
+$md-breakpoint: 991px;
+$lg-breakpoint: 1199px;
+
+.primary-btn {
+  background-color: $color-primary-500 !important;
+  cursor: pointer;
+  color: $color-white !important;
+
+  &:hover {
+    background-color: $color-primary-600;
+  }
+
+  &:focus {
+    background-color: $color-primary-700;
+  }
+
+  &:disabled,
+  &[disabled] {
+    background-color: $color-neutral-300;
+    color: $color-neutral-100;
+    cursor: no-drop;
+  }
+}
+
+.secondary-btn {
+  background-color: $color-primary-100;
+  cursor: pointer;
+  color: $color-primary-500;
+
+  &:hover {
+    background-color: $color-primary-200;
+    color: $color-primary-600;
+  }
+
+  &:focus {
+    background-color: $color-primary-300;
+    color: $color-primary-700;
+  }
+
+  &:disabled,
+  &[disabled] {
+    background-color: $color-neutral-50;
+    color: $color-neutral-500;
+    cursor: no-drop;
+  }
+}
+
+.tertiary-btn {
+  background-color: $color-white;
+  cursor: pointer;
+  color: $color-neutral-600;
+
+  &:hover {
+    background-color: $color-neutral-50;
+    color: $color-neutral-700;
+  }
+
+  &:focus {
+    background-color: $color-neutral-100;
+    color: $color-primary-800;
+  }
+
+  &:disabled,
+  &[disabled] {
+    background-color: $color-neutral-50;
+    color: $color-neutral-500;
+    cursor: no-drop;
+  }
+}
+
+.v-btn--size-default {
+  --v-btn-height: 44px;
+  --v-btn-size: 14px;
+}
+
+form,
+button {
+  border-radius: 4px !important;
+}
+
+.card-br {
+  border-radius: 6px !important;
+}
+
+.modal-br {
+  border-radius: 20px !important;
+}
+
+/** Box Shadow */
+.box-shadow-0 {
+  box-shadow: 0px 1px 2px rgba(34, 41, 149, 0.04),
+    0px 1px 4px rgba(34, 41, 149, 0.02);
+}
+
+.box-shadow-1 {
+  box-shadow: 0px 1px 2px rgba(34, 41, 149, 0.08),
+    0px 1px 4px rgba(34, 41, 149, 0.04);
+}
+
+.box-shadow-2 {
+  box-shadow: 0px 2px 8px rgba(34, 41, 149, 0.06),
+    0px 4px 16px rgba(34, 41, 149, 0.04);
+}
+
+@mixin box-shadow-2 {
+  box-shadow: 0px 2px 8px rgba(34, 41, 149, 0.06),
+    0px 4px 16px rgba(34, 41, 149, 0.04);
+}
+
+.box-shadow-3 {
+  box-shadow: 0px 8px 16px rgba(34, 41, 149, 0.08),
+    0px 24px 64px rgba(34, 41, 149, 0.04);
+}
+
+.has-background-white {
+  background-color: white;
+}
+
+.step-btn {
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 1rem 0.75rem;
+  height: auto;
+  min-width: clamp(120px, 42vw, 200px);
+  box-shadow: none;
+  color: $color-primary-500;
+
+  &.v-btn.v-btn--density-default {
+    height: auto;
+  }
+
+  @media screen and (min-width: $sm-breakpoint-min) {
+    min-width: 250px;
+  }
+}

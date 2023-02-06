@@ -1,0 +1,209 @@
+/** Typography */
+h1 {
+  font-weight: bold;
+  font-size: 56px;
+  line-height: 120%;
+}
+
+h2 {
+  font-weight: bold;
+  font-size: 48px;
+  line-height: 120%;
+}
+
+h3 {
+  font-weight: bold;
+  font-size: 40px;
+  line-height: 120%;
+}
+
+h4 {
+  font-weight: bold;
+  font-size: 32px;
+  line-height: 120%;
+}
+
+h5 {
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 120%;
+}
+
+h6 {
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 120%;
+}
+
+.body-lg {
+  font-size: 18px;
+  line-height: 140%;
+
+  + .body-lg {
+    margin-top: 12px;
+  }
+}
+
+@mixin body-lg {
+  font-size: 18px;
+  line-height: 140%;
+}
+
+.body-lg-link {
+  font-size: 18px;
+  line-height: 140%;
+}
+
+@mixin body-lg-link {
+  font-size: 18px;
+  line-height: 140%;
+}
+
+.body-md {
+  font-size: 16px !important;
+  line-height: 140% !important;
+
+  + .body-md {
+    margin-top: 8px;
+  }
+}
+
+@mixin body-md {
+  font-size: 16px !important;
+  line-height: 140% !important;
+}
+
+.body-md-link {
+  font-size: 16px;
+  line-height: 140%;
+}
+
+.body-sm {
+  font-size: 14px;
+  line-height: 140%;
+
+  + .body-sm {
+    margin-top: 4px;
+  }
+}
+
+@mixin body-sm {
+  font-size: 14px;
+  line-height: 140%;
+}
+
+.body-sm-link {
+  font-size: 14px;
+  line-height: 140%;
+}
+
+.body-xs {
+  font-size: 12px;
+  line-height: 140%;
+
+  + .body-xs {
+    margin-top: 4px;
+  }
+}
+
+.body-xs-link {
+  font-size: 12px;
+  line-height: 140%;
+}
+
+@mixin label-xl {
+  font-size: 20px !important;
+  line-height: 28px !important;
+}
+
+.label-xl {
+  font-size: 20px;
+  line-height: 28px;
+}
+
+.label-lg,
+.input-lg {
+  font-size: 18px;
+  line-height: 26px;
+}
+
+@mixin label-lg {
+  font-size: 18px;
+  line-height: 26px;
+}
+
+.label-md,
+.input-md {
+  font-size: 16px;
+  line-height: 24px;
+}
+
+@mixin label-md {
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.label-sm,
+.input-sm {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+@mixin label-sm {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.button-l {
+  font-size: 18px;
+  line-height: 28px;
+}
+
+.button-m {
+  font-size: 16px !important;
+  line-height: 26px !important;
+}
+
+.button-s {
+  font-size: 14px;
+  line-height: 24px;
+}
+
+.caption {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 140%;
+}
+
+@mixin caption {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 140%;
+}
+
+@media screen and (max-width: 768px) {
+  /** Typography */
+  h1 {
+    font-size: 48px;
+  }
+
+  h2 {
+    font-size: 40px;
+  }
+
+  h3 {
+    font-size: 32px;
+  }
+
+  h4 {
+    font-size: 24px;
+  }
+
+  h5 {
+    font-size: 20px;
+  }
+
+  h6 {
+    font-size: 16px;
+  }
+}
