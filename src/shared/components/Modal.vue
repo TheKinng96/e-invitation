@@ -59,12 +59,12 @@ function onBackgroundClicked(): void {
   width: 100vw;
   background-color: rgba(black, 0.5);
   position: fixed;
-  z-index: 100;
+  z-index: 10000;
 }
 
 .modal-card-content {
   position: fixed;
-  z-index: 101;
+  z-index: 10001;
   margin: auto;
   width: clamp(300px, calc(100vw - 40px), 60rem);
   transform: translate(-50%, -50%);

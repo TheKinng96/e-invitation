@@ -1,19 +1,30 @@
 <script setup lang="ts">
 import Toasts from '@/shared/components/Toast.vue';
 import Modal from '@/shared/components/Modal.vue';
-import { onBeforeMount, onBeforeUnmount, ref } from 'vue';
+import { onBeforeMount, onBeforeUnmount, ref, onMounted } from 'vue';
 import { useLoader } from './_store/loader';
+import { useModal } from './_store/modal';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+import InvitationModal from '@/components/Modal.vue';
 
 const loader = useLoader();
 const route = useRoute();
 const router = useRouter();
 const { t } = useI18n();
+const modal = useModal();
 
 onBeforeMount(() => {
   window.addEventListener('resize', () => {
     loader.updateWindow(window.innerWidth);
+  });
+});
+
+onMounted(() => {
+  modal.open({
+    view: InvitationModal,
+    outsideClick: false,
+    removeCancelButton: true,
   });
 });
 
@@ -23,7 +34,9 @@ onBeforeUnmount(() => {
   });
 });
 
-const deadline = new Date('2023-05-06');
+const deadline = new Date('2023-05-06').toLocaleString('en-US', {
+  timeZone: 'Asia/Singapore',
+});
 const openDrawer = ref(false);
 const imgUrl = new URL('@/assets/img/logo.svg', import.meta.url).href;
 
@@ -102,10 +115,13 @@ const isCurrentPage = (currentRoute: string): boolean => {
       <!-- Hero and count down -->
       <v-container>
         <div class="wrapper">
+          <h3 class="has-text-centered">Days until the big day</h3>
           <vue3-flip-countdown :deadlineDate="deadline" />
         </div>
       </v-container>
+
       <!-- Quotes -->
+
       <!-- Gallery about our lives -->
       <!-- Location -->
       <!-- Form RESP -->
