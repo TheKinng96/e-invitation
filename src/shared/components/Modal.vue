@@ -25,7 +25,11 @@ function onBackgroundClicked(): void {
 
 <template>
   <div v-if="isOpen">
-    <div class="modal-background" @click="onBackgroundClicked">
+    <div
+      class="modal-background"
+      @click="onBackgroundClicked"
+      :class="{ closing: modal.isClosing }"
+    >
       <label
         class="modal-close-button"
         @click="modal.close()"
@@ -60,6 +64,11 @@ function onBackgroundClicked(): void {
   background-color: rgba(black, 0.5);
   position: fixed;
   z-index: 10000;
+  transition: all 0.5s ease-in-out;
+
+  &.closing {
+    opacity: 0;
+  }
 }
 
 .modal-card-content {

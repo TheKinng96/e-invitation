@@ -10,6 +10,7 @@ export type Modal = {
   actions?: ModalAction[],
   outsideClick?: boolean,
   removeCancelButton?: boolean,
+  closing?: boolean,
 };
 
 export type ModalAction = {
@@ -23,6 +24,7 @@ export const useModal = defineStore("modal", {
     outsideClick: true,
     view: {},
     actions: [],
+    closing: false,
   }),
   actions: {
     open(modalData: Modal) {
@@ -31,6 +33,7 @@ export const useModal = defineStore("modal", {
       this.outsideClick = modalData.outsideClick ?? true;
       this.actions = modalData.actions;
       this.removeCancelButton = modalData.removeCancelButton ?? false;
+      this.closing = false;
       // Using markRaw to avoid over performance as reactive is not required
       this.view = markRaw(modalData.view);
     },
@@ -38,8 +41,17 @@ export const useModal = defineStore("modal", {
       this.isOpen = false;
       this.view = {};
       this.actions = [];
+      this.closing = false;
     },
+    setClosingAnimation() {
+      this.closing = true;
+    }
   },
+  getters: {
+    isClosing(): boolean {
+      return this.closing ?? false;
+    }
+  }
 });
 
 export default useModal;
