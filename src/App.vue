@@ -7,6 +7,7 @@ import { useModal } from './_store/modal';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import InvitationModal from '@/components/Modal.vue';
+import Hero from '@/components/Hero.vue';
 
 const loader = useLoader();
 const route = useRoute();
@@ -34,9 +35,6 @@ onBeforeUnmount(() => {
   });
 });
 
-const deadline = new Date('2023-05-06').toLocaleString('en-US', {
-  timeZone: 'Asia/Singapore',
-});
 const openDrawer = ref(false);
 const imgUrl = new URL('@/assets/img/logo.svg', import.meta.url).href;
 
@@ -113,13 +111,7 @@ const isCurrentPage = (currentRoute: string): boolean => {
     </v-navigation-drawer>
     <v-main>
       <!-- Hero and count down -->
-      <v-container>
-        <div class="wrapper">
-          <h3 class="has-text-centered">Days until the big day</h3>
-          <vue3-flip-countdown :deadlineDate="deadline" />
-        </div>
-      </v-container>
-
+      <Hero />
       <!-- Quotes -->
 
       <!-- Gallery about our lives -->
