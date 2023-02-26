@@ -42,6 +42,7 @@ const close = () => {
   padding: 2rem;
   border-radius: 1rem;
   transition: all ease-in-out 0.5s;
+  max-height: 100svh;
 
   &.closing {
     transform: translateY(-50%);

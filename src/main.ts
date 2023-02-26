@@ -11,9 +11,6 @@ import VueGtag from 'vue-gtag';
 import i18n from './plugins/i18n';
 import './plugins/yup';
 
-// Directive
-import { outsideClick } from './_helpers/directives';
-
 // Component
 import Loader from '@/shared/components/Loader.vue';
 import Icon from '@/shared/icons/Icon.vue';
@@ -33,7 +30,6 @@ app.use(VueGtag, {
 });
 
 // Directives
-app.directive('outsideClick', outsideClick);
 app.component('loader', Loader);
 app.component('Icon', Icon);
 

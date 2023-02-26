@@ -2,20 +2,13 @@ import { IUser } from '@/_types/user.type';
 import { PiniaStateTree } from '../piniaTypes';
 
 export interface UserState extends PiniaStateTree {
-  token: string | null;
   user: IUser;
-  email: string | null;
-  authorizationStatus: boolean;
-  userStatus: string;
-  authenticationStatus: boolean;
-  platform: string;
-  userType: string;
+  isValid?: boolean;
+  token?: string;
 }
 
 export interface ILogin {
-  expires?: number;
-  status?: string;
-  token?: string;
-  type?: string;
-  user: IUser;
+  isValid: boolean;
+  token: string;
+  model: IUser;
 }

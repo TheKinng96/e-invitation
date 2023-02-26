@@ -18,7 +18,7 @@ const deadline = new Date('2023-05-06').toLocaleString('en-US', {
 <style lang="scss" scoped>
 .hero-container {
   width: 100vw;
-  height: calc(100vh - 64px);
+  height: calc(100svh - 64px);
   background: url('https://gen-wedding-images.s3.ap-northeast-1.amazonaws.com/DSCF7411.JPG');
   background-position: center;
   background-size: cover;

@@ -58,7 +58,10 @@ onBeforeUnmount(() => {
       <Quotes />
 
       <!-- Gallery about our lives -->
-      <Gallery />
+      <Suspense>
+        <Gallery />
+        <template #fallback> hihi </template>
+      </Suspense>
 
       <!-- Location -->
       <!-- Form RESP -->
