@@ -1,9 +1,7 @@
 <script lang="ts" setup>
 import useModal from '@/_store/modal';
-import { ref } from 'vue';
 
 const modal = useModal();
-const isClosing = ref(false);
 const close = () => {
   modal.setClosingAnimation();
   setTimeout(() => {

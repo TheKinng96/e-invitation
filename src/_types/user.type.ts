@@ -3,6 +3,12 @@ export interface IUser {
   username: string;
   name: string;
   avatar: string;
-  created: Date;
-  updated: Date;
+  created: string;
+  updated: string;
+  collectionId: string;
+  collectionName: string;
+  emailVisibility: boolean;
+  verified: boolean;
+  expand?: any;
+  isNew?: any;
 }

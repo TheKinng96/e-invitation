@@ -3,12 +3,10 @@ import { PiniaStateTree } from '../piniaTypes';
 
 export interface UserState extends PiniaStateTree {
   user: IUser;
-  isValid?: boolean;
-  token?: string;
+  token: string;
 }
 
 export interface ILogin {
-  isValid: boolean;
-  token: string;
-  model: IUser;
+  email: string;
+  password: string;
 }
