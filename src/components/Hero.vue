@@ -28,9 +28,10 @@ const deadline = new Date('2023-05-06').toLocaleString('en-US', {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
     color: white;
     height: 100%;
+    padding-bottom: 20vh;
 
     > div {
       height: max-content;

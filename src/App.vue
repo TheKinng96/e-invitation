@@ -6,8 +6,16 @@ import { useLoader } from './_store/loader';
 import { useModal } from './_store/modal';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import InvitationModal from '@/components/Modal.vue';
-import Hero from '@/components/Hero.vue';
+import {
+  Hero,
+  Gallery,
+  Locations,
+  Modal as InvitationModal,
+  Quotes,
+  RSVP,
+  Support,
+  Navbar,
+} from '@/components';
 
 const loader = useLoader();
 const route = useRoute();
@@ -34,87 +42,24 @@ onBeforeUnmount(() => {
     loader.updateWindow(window.innerWidth);
   });
 });
-
-const openDrawer = ref(false);
-const imgUrl = new URL('@/assets/img/logo.svg', import.meta.url).href;
-
-const appItems = [
-  {
-    title: t('page_title.dashboard'),
-    value: 'dashboard',
-    icon: 'home-02',
-  },
-  {
-    title: t('page_title.campaigns'),
-    value: 'campaigns',
-    icon: 'currency-yen-circle',
-  },
-  {
-    title: t('page_title.insights'),
-    value: 'insights',
-    icon: 'bar-chart-12',
-  },
-  {
-    title: t('page_title.google_analytics'),
-    value: 'google-analytics',
-    icon: 'line-chart-up-02',
-    isNew: true,
-  },
-];
-
-const isCurrentPage = (currentRoute: string): boolean => {
-  return route.path.includes(currentRoute);
-};
 </script>
 
 <template>
   <v-app>
     <Modal />
     <Toasts />
-    <v-app-bar id="app-bar">
-      <v-app-bar-nav-icon
-        @click="openDrawer = !openDrawer"
-        v-if="loader.isMobile"
-      />
-      <v-spacer v-if="loader.isMobile" />
-      <router-link to="/dashboard" class="logo-container">
-        <img :src="imgUrl" class="login-logo" />
-      </router-link>
-      <v-spacer />
-    </v-app-bar>
 
-    <v-navigation-drawer
-      v-model="openDrawer"
-      absolute
-      id="adsist-mobile-drawer"
-      v-if="loader.isMobile"
-    >
-      <v-list>
-        <v-list-item
-          v-for="item in appItems"
-          :key="item.value"
-          :class="{ active: isCurrentPage(item.value) }"
-        >
-          <router-link :to="`#${item.value}`">
-            <v-btn variant="text" class="list-item">
-              <Icon
-                :icon="item.icon"
-                src="dashboard"
-                :type="isCurrentPage(item.value) ? 'primary' : 'grey'"
-              />
-              <v-spacer />
-              {{ item.title }}
-            </v-btn>
-          </router-link>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
+    <Navbar />
     <v-main>
       <!-- Hero and count down -->
       <Hero />
+
       <!-- Quotes -->
+      <Quotes />
 
       <!-- Gallery about our lives -->
+      <Gallery />
+
       <!-- Location -->
       <!-- Form RESP -->
       <!-- Button to support with gift -->
