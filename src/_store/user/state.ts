@@ -1,4 +1,3 @@
-import { IUpdateLocalStorage } from '@/_types/common';
 import { IUser } from '@/_types/user.type';
 import { UserStore } from '.';
 import { PiniaState } from '../piniaTypes';
@@ -17,22 +16,9 @@ export function syncLocalStorage(namespace: string, defaultValue: any): any {
   return JSON.parse(localStorage.getItem(namespace) as string);
 }
 
-/**
- * Update localstorage
- * @param IUpdateLocalStorage
- * @returns void
- */
-export function updateLocalStorage({
-  namespace,
-  value,
-}: IUpdateLocalStorage): void {
-  localStorage.removeItem(namespace.toString());
-  localStorage.setItem(namespace.toString(), JSON.stringify(value));
-}
-
 export const state: PiniaState<UserStore> = () => {
   return {
-    user: syncLocalStorage('user', {}) as IUser,
+    user: null,
     token: '',
   };
 };

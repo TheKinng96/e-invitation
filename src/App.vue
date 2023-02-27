@@ -16,17 +16,20 @@ import {
   Support,
   Navbar,
 } from '@/components';
+import { useUser } from './_store/user';
 
 const loader = useLoader();
 const route = useRoute();
 const router = useRouter();
 const { t } = useI18n();
 const modal = useModal();
+const user = useUser();
 
 onBeforeMount(() => {
   window.addEventListener('resize', () => {
     loader.updateWindow(window.innerWidth);
   });
+  user.checkUser();
 });
 
 onMounted(() => {

@@ -3,7 +3,6 @@ import { UserStore } from '.';
 import { ILogin } from './types';
 import { IUser } from '@/_types/user.type';
 import { LocalStorage } from '@/_types/common';
-import { updateLocalStorage } from './state';
 import pb from '@/services/pb';
 
 export interface UserActions extends PiniaActionTree {
@@ -12,6 +11,16 @@ export interface UserActions extends PiniaActionTree {
 }
 
 export const actions: PiniaActions<UserStore> = {
+  checkUser() {
+    if (localStorage.getItem('pocketbase_auth') !== null) {
+      let { model: user, token } = JSON.parse(localStorage.getItem('pocketbase_auth') as string);
+      this.user = {
+        ...user,
+        avatar: `/api/files/${user.collectionName}/${user.id}/${user.avatar}`
+      } as IUser;
+      this.token = token;
+    }
+  },
   async logUserIn({ email, password }: ILogin) {
     let result;
     try {
@@ -29,9 +38,6 @@ export const actions: PiniaActions<UserStore> = {
       avatar: `${import.meta.env.VITE_API_URL}/files/${user.collectionName}/${user.id}/${user.avatar}`
     } as IUser;
     this.token = (token);
-
-    updateLocalStorage({ namespace: LocalStorage.USER, value: user });
-    updateLocalStorage({ namespace: LocalStorage.JWT, value: token });
   },
 
   logUserOut(): boolean {

@@ -2,7 +2,7 @@ import { IUser } from '@/_types/user.type';
 import { PiniaStateTree } from '../piniaTypes';
 
 export interface UserState extends PiniaStateTree {
-  user: IUser;
+  user: IUser | null;
   token: string;
 }
 

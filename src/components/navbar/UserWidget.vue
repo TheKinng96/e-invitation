@@ -7,8 +7,8 @@ const user = useUser();
 const modal = useModal();
 
 const getImage = () => {
-  if (user.isValid) {
-    return user.avatar;
+  if (user.user) {
+    return new URL(user.user.avatar, import.meta.env.VITE_API_URL).href;
   }
 
   return new URL(`@/assets/img/avatar.svg`, import.meta.url).href;
@@ -24,11 +24,11 @@ const openModal = () => {
 </script>
 
 <template>
-  <button :class="{ login: user.isValid }" @click="openModal()">
+  <button :class="{ login: user.user }" @click="openModal()">
     <div>
       <v-avatar :image="getImage()"></v-avatar>
     </div>
-    <span v-if="user.isValid">{{ user.user.username }}</span>
+    <span v-if="user.user">{{ user.user.username }}</span>
     <span v-else>Guest</span>
   </button>
 </template>
