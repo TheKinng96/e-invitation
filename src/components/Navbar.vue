@@ -37,7 +37,7 @@ const dotIcon = new URL(`@/assets/img/dots-vertical.svg`, import.meta.url).href;
       <img :src="dotIcon" alt="nav icon" />
     </v-app-bar-nav-icon>
     <v-spacer v-if="loader.isMobile" />
-    <router-link to="/dashboard" class="logo-container">
+    <router-link to="/" class="logo-container">
       <img :src="imgUrl" class="login-logo" />
     </router-link>
     <v-spacer />

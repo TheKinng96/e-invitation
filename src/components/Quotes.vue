@@ -2,7 +2,7 @@
 
 <template>
   <div class="block-container">
-    <v-container>
+    <v-container style="padding: 2rem">
       <p>
         Love is not just about finding the perfect person, it's about choosing
         to spend every day creating a perfect life together.
@@ -17,7 +17,7 @@
 
 <style lang="scss" scoped>
 .block-container {
-  min-height: 250px;
+  min-height: 350px;
   background-color: #3e588f;
   display: flex;
   align-items: center;

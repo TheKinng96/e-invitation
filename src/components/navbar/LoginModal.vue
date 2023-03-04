@@ -82,11 +82,7 @@ const login = async (values: any) => {
         >
           {{ t(`login`) }}
         </v-btn>
-        <v-btn
-          class="button-m button"
-          type="submit"
-          :disabled="!meta.valid || isLoading"
-        >
+        <v-btn class="button-m button" :disabled="!meta.valid || isLoading">
           {{ t(`register`) }}
         </v-btn>
       </div>
