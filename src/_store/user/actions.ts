@@ -16,7 +16,7 @@ export const actions: PiniaActions<UserStore> = {
       let { model: user, token } = JSON.parse(localStorage.getItem('pocketbase_auth') as string);
       this.user = {
         ...user,
-        avatar: `api/files/${user.collectionName}/${user.id}/${user.avatar}`
+        avatar: `files/${user.collectionName}/${user.id}/${user.avatar}`
       } as IUser;
       this.token = token;
     }

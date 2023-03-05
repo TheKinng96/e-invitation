@@ -67,6 +67,7 @@ onBeforeUnmount(() => {
       </Suspense>
 
       <!-- Location -->
+      <Locations />
       <!-- Form RESP -->
       <!-- Button to support with gift -->
     </v-main>

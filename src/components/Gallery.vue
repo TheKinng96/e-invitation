@@ -1,8 +1,6 @@
 <script lang="ts" async setup>
 import pb from '@/services/pb';
-import ImagesGrid from 'vue-images-grid';
-import 'vue-images-grid/dist/style.css';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { useUser } from '@/_store/user';
 
@@ -16,7 +14,7 @@ interface IImage {
   updated: string;
   user: string;
   expand?: any;
-  src?: string;
+  aspect_ratio: string;
 }
 const fileInput = ref();
 const addPhoto = () => {
@@ -24,6 +22,8 @@ const addPhoto = () => {
 };
 
 const user = useUser();
+const imageContainer = ref();
+const imageWidth = ref();
 
 // fetch a paginated records list
 const images = ref<Array<any>>([]);
@@ -32,19 +32,27 @@ const secretAccessKey = import.meta.env.VITE_S3_SECRET_KEY;
 const accessKeyId = import.meta.env.VITE_S3_ACCESS_KEY;
 const bucket = import.meta.env.VITE_S3_BUCKET_NAME;
 
-onMounted(() => {
+onMounted(async () => {
   updateImageList();
+  console.log(imageContainer.value.clientWidth);
+  onResize();
+  window.addEventListener('resize', onResize);
 });
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', onResize);
+});
+
+function onResize() {
+  if (imageContainer.value) {
+    imageWidth.value = imageContainer.value.clientWidth / 4;
+  }
+}
 
 const updateImageList = async () => {
   const resultList = await pb.collection('images').getList(1, 10, {});
   if (resultList.items.length > 0) {
-    images.value = resultList.items.map((image) => {
-      return {
-        ...image,
-        src: image.image_link,
-      };
-    });
+    images.value = resultList.items;
   }
 
   updatedAt.value = new Date().getTime();
@@ -60,22 +68,34 @@ const client = new S3Client({
 
 const onImageUploaded = async (event: any) => {
   const file = event.target.files[0];
+
+  // Get image aspect ratio
+  let dimensions = new Image();
+  let aspectRatio = '';
+  dimensions.src = URL.createObjectURL(file);
+  dimensions.onload = function () {
+    aspectRatio = `${(this as any).width} / ${(this as any).height}`;
+  };
+
+  let fileName = file.name.replace(/\s/g, '-');
+
   const command = new PutObjectCommand({
     Bucket: bucket,
-    Key: file.name,
+    Key: fileName,
     Body: file,
   });
 
   try {
-    const response = await client.send(command);
+    await client.send(command);
   } catch (err) {
     console.error(err);
   }
 
   const data = {
-    image_link: `https://${bucket}.s3.ap-northeast-1.amazonaws.com/${file.name}`,
+    image_link: `https://${bucket}.s3.ap-northeast-1.amazonaws.com/${fileName}`,
     user: user.getUser.id,
     title: 'image-name',
+    aspect_ratio: aspectRatio,
   };
 
   await pb.collection('images').create(data);
@@ -85,17 +105,15 @@ const onImageUploaded = async (event: any) => {
 
 <template>
   <div class="block-container">
-    <v-container class="wrapper">
-      <ImagesGrid
+    <v-container class="wrapper" ref="imageContainer">
+      <div
         v-if="images.length > 0"
-        :key="updatedAt"
-        :cols="4"
-        :images="images"
-        :image-style="{ width: 'auto', marginBottom: '10px' }"
-        :is-responsive="true"
-        col-spaces="20px"
-        object-fit="cover"
-      />
+        v-for="image in images"
+        :style="`aspect-ratio: ${image.aspect_ratio}; width: 10rem;`"
+        class="image-container"
+      >
+        <img :src="image.image_link" :key="updatedAt" />
+      </div>
       <button @click="addPhoto()" class="add-button">Add Photo</button>
     </v-container>
     <button class="show-more">Show more</button>
@@ -120,8 +138,9 @@ const onImageUploaded = async (event: any) => {
 }
 
 .wrapper {
-  display: grid;
-  grid-template-columns: repeat(4, auto);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .add-button {
@@ -140,6 +159,14 @@ const onImageUploaded = async (event: any) => {
 
 .image-container {
   position: relative;
+  width: 100px;
+  height: max-content;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
 
   span {
     @include box-shadow-2;
