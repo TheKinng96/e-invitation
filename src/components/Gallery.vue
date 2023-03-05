@@ -4,6 +4,7 @@ import ImagesGrid from 'vue-images-grid';
 import 'vue-images-grid/dist/style.css';
 import { ref, onMounted } from 'vue';
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { useUser } from '@/_store/user';
 
 interface IImage {
   collectionId: string;
@@ -22,12 +23,21 @@ const addPhoto = () => {
   fileInput.value.click();
 };
 
+const user = useUser();
+
 // fetch a paginated records list
-const resultList = await await pb.collection('images').getList(1, 10, {});
 const images = ref<Array<any>>([]);
 const updatedAt = ref<number>(new Date().getTime());
+const secretAccessKey = import.meta.env.VITE_S3_SECRET_KEY;
+const accessKeyId = import.meta.env.VITE_S3_ACCESS_KEY;
+const bucket = import.meta.env.VITE_S3_BUCKET_NAME;
 
 onMounted(() => {
+  updateImageList();
+});
+
+const updateImageList = async () => {
+  const resultList = await pb.collection('images').getList(1, 10, {});
   if (resultList.items.length > 0) {
     images.value = resultList.items.map((image) => {
       return {
@@ -37,54 +47,51 @@ onMounted(() => {
     });
   }
 
-  setTimeout(() => {
-    images.value = [
-      ...images.value,
-      {
-        id: 0,
-        src: 'https://artemdev.com/c/wf',
-      },
-    ];
-
-    updatedAt.value = new Date().getTime();
-  }, 3000);
-});
+  updatedAt.value = new Date().getTime();
+};
 
 const client = new S3Client({
   region: 'ap-northeast-1',
   credentials: {
-    secretAccessKey: import.meta.env.VITE_S3_SECRET_KEY,
-    accessKeyId: import.meta.env.VITE_S3_ACCESS_KEY,
+    secretAccessKey,
+    accessKeyId,
   },
 });
 
 const onImageUploaded = async (event: any) => {
   const file = event.target.files[0];
   const command = new PutObjectCommand({
-    Bucket: 'gen-wedding-images',
+    Bucket: bucket,
     Key: file.name,
     Body: file,
   });
 
   try {
     const response = await client.send(command);
-    console.log(response);
   } catch (err) {
     console.error(err);
   }
+
+  const data = {
+    image_link: `https://${bucket}.s3.ap-northeast-1.amazonaws.com/${file.name}`,
+    user: user.getUser.id,
+    title: 'image-name',
+  };
+
+  await pb.collection('images').create(data);
+  updateImageList();
 };
 </script>
 
 <template>
   <div class="block-container">
-    <pre>{{ images }}</pre>
     <v-container class="wrapper">
       <ImagesGrid
         v-if="images.length > 0"
         :key="updatedAt"
         :cols="4"
         :images="images"
-        :image-style="{ width: '300px', marginBottom: '10px' }"
+        :image-style="{ width: 'auto', marginBottom: '10px' }"
         :is-responsive="true"
         col-spaces="20px"
         object-fit="cover"
