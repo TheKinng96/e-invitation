@@ -1,7 +1,6 @@
 <script lang="ts" async setup>
 import pb from '@/services/pb';
-import { ref, onMounted, onBeforeUnmount } from 'vue';
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { ref, onMounted } from 'vue';
 import { useUser } from '@/_store/user';
 
 interface IImage {
@@ -23,50 +22,32 @@ const addPhoto = () => {
 
 const user = useUser();
 const imageContainer = ref();
-const imageWidth = ref();
 
 // fetch a paginated records list
 const images = ref<Array<any>>([]);
 const updatedAt = ref<number>(new Date().getTime());
-const secretAccessKey = import.meta.env.VITE_S3_SECRET_KEY;
-const accessKeyId = import.meta.env.VITE_S3_ACCESS_KEY;
-const bucket = import.meta.env.VITE_S3_BUCKET_NAME;
 
 onMounted(async () => {
   updateImageList();
-  console.log(imageContainer.value.clientWidth);
-  onResize();
-  window.addEventListener('resize', onResize);
 });
-
-onBeforeUnmount(() => {
-  window.removeEventListener('resize', onResize);
-});
-
-function onResize() {
-  if (imageContainer.value) {
-    imageWidth.value = imageContainer.value.clientWidth / 4;
-  }
-}
 
 const updateImageList = async () => {
   const resultList = await pb.collection('images').getList(1, 10, {});
   if (resultList.items.length > 0) {
-    images.value = resultList.items;
+    images.value = resultList.items.map((image) => {
+      const url = pb.getFileUrl(image, image.image, { thumb: '0x200' });
+      return {
+        ...image,
+        image_link: url,
+      };
+    });
   }
 
   updatedAt.value = new Date().getTime();
 };
 
-const client = new S3Client({
-  region: 'ap-northeast-1',
-  credentials: {
-    secretAccessKey,
-    accessKeyId,
-  },
-});
-
 const onImageUploaded = async (event: any) => {
+  let formData = new FormData();
   const file = event.target.files[0];
 
   // Get image aspect ratio
@@ -74,31 +55,25 @@ const onImageUploaded = async (event: any) => {
   let aspectRatio = '';
   dimensions.src = URL.createObjectURL(file);
   dimensions.onload = function () {
-    aspectRatio = `${(this as any).width} / ${(this as any).height}`;
+    let { width, height }: any = this;
+
+    if (width > height) {
+      aspectRatio = `${width / height} / 1`;
+    } else {
+      aspectRatio = `1 / ${height / width}`;
+    }
   };
 
-  let fileName = file.name.replace(/\s/g, '-');
+  formData.append('image', file);
+  formData.append(
+    'image_link',
+    'https://gen-wedding-images.s3.ap-northeast-1.amazonaws.com/G3ND0925.JPG',
+  );
+  formData.append('user', user.getUser.id);
+  formData.append('title', 'image-name');
+  formData.append('aspect_ratio', aspectRatio);
 
-  const command = new PutObjectCommand({
-    Bucket: bucket,
-    Key: fileName,
-    Body: file,
-  });
-
-  try {
-    await client.send(command);
-  } catch (err) {
-    console.error(err);
-  }
-
-  const data = {
-    image_link: `https://${bucket}.s3.ap-northeast-1.amazonaws.com/${fileName}`,
-    user: user.getUser.id,
-    title: 'image-name',
-    aspect_ratio: aspectRatio,
-  };
-
-  await pb.collection('images').create(data);
+  await pb.collection('images').create(formData);
   updateImageList();
 };
 </script>
@@ -109,8 +84,9 @@ const onImageUploaded = async (event: any) => {
       <div
         v-if="images.length > 0"
         v-for="image in images"
-        :style="`aspect-ratio: ${image.aspect_ratio}; width: 10rem;`"
+        :style="`aspect-ratio: ${image.aspect_ratio};`"
         class="image-container"
+        :key="image.id"
       >
         <img :src="image.image_link" :key="updatedAt" />
       </div>
@@ -138,9 +114,39 @@ const onImageUploaded = async (event: any) => {
 }
 
 .wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  --gap: 0.5em;
+  --columns: 4;
+  max-width: 60rem;
+  margin: 0 auto;
+  display: column;
+  columns: var(--columns);
+  gap: var(--gap);
+
+  > * {
+    break-inside: avoid;
+    margin-bottom: var(--gap);
+  }
+
+  @media screen and (max-width: 500px) {
+    --columns: 1;
+  }
+
+  @media screen and (max-width: $sm-breakpoint-max) {
+    --columns: 2;
+  }
+}
+
+@supports (grid-template-rows: masonry) {
+  .wrapper {
+    display: grid;
+    grid-template-columns: repeat(var(--columns), 1fr);
+    grid-template-rows: masonry;
+    grid-auto-flow: dense;
+
+    > * {
+      margin-bottom: 0em;
+    }
+  }
 }
 
 .add-button {
@@ -148,7 +154,7 @@ const onImageUploaded = async (event: any) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 4rem;
+  width: 100%;
   height: 4rem;
   transition: all 0.2s linear;
 
@@ -159,7 +165,6 @@ const onImageUploaded = async (event: any) => {
 
 .image-container {
   position: relative;
-  width: 100px;
   height: max-content;
 
   img {
