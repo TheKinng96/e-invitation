@@ -26,9 +26,8 @@ router.beforeEach(async (to: any, from: any, next: any) => {
     next({ name: 'main' });
     return;
   }
-  else {
-    next();
-  }
+
+  next();
 });
 
 export default router;

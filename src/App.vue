@@ -1,28 +1,14 @@
 <script setup lang="ts">
 import Toasts from '@/shared/components/Toast.vue';
 import Modal from '@/shared/components/Modal.vue';
-import { onBeforeMount, onBeforeUnmount, ref, onMounted } from 'vue';
+import { onBeforeMount, onBeforeUnmount } from 'vue';
 import { useLoader } from './_store/loader';
-import { useModal } from './_store/modal';
-import { useRoute, useRouter } from 'vue-router';
-import { useI18n } from 'vue-i18n';
 import {
-  Hero,
-  Gallery,
-  Locations,
-  Modal as InvitationModal,
-  Quotes,
-  RSVP,
-  Support,
   Navbar,
 } from '@/components';
 import { useUser } from './_store/user';
 
 const loader = useLoader();
-const route = useRoute();
-const router = useRouter();
-const { t } = useI18n();
-const modal = useModal();
 const user = useUser();
 
 onBeforeMount(() => {
@@ -30,14 +16,6 @@ onBeforeMount(() => {
     loader.updateWindow(window.innerWidth);
   });
   user.checkUser();
-});
-
-onMounted(() => {
-  modal.open({
-    view: InvitationModal,
-    outsideClick: false,
-    removeCancelButton: true,
-  });
 });
 
 onBeforeUnmount(() => {
@@ -53,27 +31,7 @@ onBeforeUnmount(() => {
     <Toasts />
 
     <Navbar />
-    <v-main>
-      <!-- Hero and count down -->
-      <Hero />
-
-      <!-- Quotes -->
-      <Quotes />
-
-      <!-- Gallery about our lives -->
-      <Suspense>
-        <Gallery />
-        <template #fallback> hihi </template>
-      </Suspense>
-
-      <!-- Location -->
-      <Locations />
-
-      <!-- Form RESP -->
-      <RSVP />
-
-      <!-- Button to support with gift -->
-    </v-main>
+    <router-view />
   </v-app>
 </template>
 
