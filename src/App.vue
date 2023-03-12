@@ -3,9 +3,6 @@ import Toasts from '@/shared/components/Toast.vue';
 import Modal from '@/shared/components/Modal.vue';
 import { onBeforeMount, onBeforeUnmount } from 'vue';
 import { useLoader } from './_store/loader';
-import {
-  Navbar,
-} from '@/components';
 import { useUser } from './_store/user';
 
 const loader = useLoader();
@@ -30,7 +27,6 @@ onBeforeUnmount(() => {
     <Modal />
     <Toasts />
 
-    <Navbar />
     <router-view />
   </v-app>
 </template>

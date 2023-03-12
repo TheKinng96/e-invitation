@@ -19,7 +19,6 @@ onMounted(async () => {
       router.push({ name: 'main' });
     }, 1000);
   } catch (error) {
-    console.log(error);
     status.value = 'failed';
   }
 });

@@ -29,6 +29,8 @@ onMounted(() => {
 </script>
 
 <template>
+  <Navbar />
+
   <v-main>
     <!-- Hero and count down -->
     <Hero />
