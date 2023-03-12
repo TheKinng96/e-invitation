@@ -1,102 +1,107 @@
-<script setup lang="ts">
-import { toRef } from 'vue';
-import { FieldMeta, useField } from 'vee-validate';
-import { strict } from 'assert';
+<script lang="ts" setup>
+import { IIcon } from '@/_types/component.type';
+import { ref } from 'vue';
 
-const props = defineProps<{
-  name: string;
+export interface ISelectOption {
+  icon?: IIcon;
   label: string;
-  hideDetail?: boolean;
-  hasNoMargin?: boolean;
-  items: any;
-  itemTitle?: string;
-  itemValue?: string;
-  variant?: 'filled' | 'outlined' | 'plain' | 'solo' | 'underlined';
-  errorMessages?: string[];
-  description?: string;
+  value: string;
+}
+
+const emit = defineEmits(['onChanged']);
+const props = defineProps<{
+  options: Array<ISelectOption>;
+  selected: ISelectOption;
 }>();
+const currentOption = ref(props.selected);
+const isSelectOpened = ref(false);
 
-const getClass = (errors: string[], meta: FieldMeta<any>): string => {
-  if (!meta.dirty) {
-    return '';
+const onChanged = () => {
+  isSelectOpened.value = false;
+  emit('onChanged', currentOption.value);
+};
+
+const openSelect = () => {
+  if (isSelectOpened.value) {
+    isSelectOpened.value = false;
+    return;
   }
 
-  return hasErrorMessages() || errors.length > 0 ? 'v-field--error' : '';
+  isSelectOpened.value = true;
 };
-
-const getErrorMessages = (errors: string[]): string[] => {
-  if (hasErrorMessages()) {
-    return props.errorMessages ?? [];
-  }
-
-  return errors;
-};
-
-const hasErrorMessages = (): boolean => {
-  if (!props.errorMessages) return false;
-  return props.errorMessages.length > 0;
-};
-
-const { value, handleBlur, errors, meta } = useField(
-  toRef(props, 'name'),
-  undefined,
-);
 </script>
 
 <template>
-  <div>
-    <span class="input-label">{{ props.label }}</span>
-    <v-select
-      class="adsist-select"
-      v-model="value"
-      v-bind="$props"
-      :error-messages="getErrorMessages(errors)"
-      :hide-details="props.hideDetail ?? false"
-      :label="label"
-      :items="items"
-      :item-title="itemTitle"
-      :item-value="itemValue"
-      :variant="variant ?? 'outlined'"
-      single-line
-      :class="{
-        'has-description': props.description,
-      }"
+  <div class="select-container">
+    <select
+      @change="onChanged"
+      v-model="currentOption"
+      @click="openSelect()"
+      :class="{ 'has-icon': currentOption.icon }"
     >
-    </v-select>
-    <span
-      v-if="props.description"
-      class="extra-description"
-      v-html="props.description"
+      <option v-for="option in props.options" :value="option">
+        {{ option.label }}
+      </option>
+    </select>
+    <Transition>
+      <Icon
+        v-if="currentOption.icon"
+        :icon="currentOption.icon.icon"
+        :type="currentOption.icon.type ?? 'grey'"
+        class="select-icon"
+      />
+    </Transition>
+    <Icon
+      src="common"
+      :icon="isSelectOpened ? 'chevron-up' : 'chevron-down'"
+      class="icon-down"
+      type="neutral"
     />
   </div>
 </template>
 
 <style lang="scss" scoped>
-.input-label {
-  @include label-lg;
-  color: $color-neutral-800;
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.2s ease;
 }
 
-.extra-description {
-  @include body-sm;
-  color: $color-neutral-500;
-  display: block;
-  margin-bottom: 1.25rem;
-  margin-top: 0.5rem;
-
-  &:before {
-    content: '※';
-    margin-right: 2px;
-  }
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 
-.adsist-select {
-  margin-top: 0.5rem;
+.select-container {
+  position: relative;
 
-  &.has-description {
-    :deep(.v-input__details) {
-      display: none;
+  select {
+    width: 100%;
+    cursor: pointer;
+    border: 1px solid $color-neutral-200;
+    border-radius: 4px;
+    padding: 0.5rem;
+    color: $color-neutral-500;
+    padding-left: 1rem;
+
+    &.has-icon {
+      padding-left: 2rem;
     }
+  }
+
+  .select-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0.5rem;
+    pointer-events: none;
+  }
+
+  .icon-down {
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    position: absolute;
+    pointer-events: none;
   }
 }
 </style>

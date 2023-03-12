@@ -1,4 +1,4 @@
-export const en = {
+export const cn = {
   // Modal
   cancel: 'cancel',
 

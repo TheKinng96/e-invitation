@@ -4,10 +4,9 @@ import i18n from '@/plugins/i18n';
 const { t } = i18n.global;
 const locale = (
   key: string,
-  file = 'validation',
   placeholder?: any,
 ): string => {
-  return t(`${file}.${key}`, placeholder);
+  return t(key, placeholder);
 };
 
 export const alphabetOnly = (value: string | undefined) => {
@@ -42,15 +41,15 @@ export const urlRegexValidator = (value: string | undefined) => {
 // Official doc: https://github.com/jquense/yup#localization-and-i18n
 setLocale({
   mixed: {
-    required: locale('error.required'),
+    required: locale('required'),
     oneOf: locale('passwords_must_match'),
   },
   string: {
-    email: locale('error.email_format'),
+    email: locale('email_format'),
     max(params) {
-      return locale('max_length', 'validations', { length: params.max });
+      return locale('max_length', { length: params.max });
     },
-    url: locale('error.missing_http'),
+    url: locale('missing_http'),
   },
 });
 

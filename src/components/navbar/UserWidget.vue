@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import pb from '@/services/pb';
 import useModal from '@/_store/modal';
 import { useUser } from '@/_store/user';
 import LoginModal from './LoginModal.vue';
@@ -7,14 +8,18 @@ const user = useUser();
 const modal = useModal();
 
 const getImage = () => {
-  if (user.user) {
-    return new URL(user.user.avatar, import.meta.env.VITE_API_URL).href;
+  if (user.user && user.user.avatar) {
+    return pb.getFileUrl(user.user, user.user.avatar);
   }
 
   return new URL(`@/assets/img/avatar.svg`, import.meta.url).href;
 };
 
 const openModal = () => {
+  if (user.user) {
+    return;
+  }
+
   modal.open({
     view: LoginModal,
     outsideClick: true,
@@ -24,23 +29,47 @@ const openModal = () => {
 </script>
 
 <template>
-  <button :class="{ login: user.user }" @click="openModal()">
-    <div>
+  <button @click="openModal()" class="user-widget">
+    <div class="avatar-container">
       <v-avatar :image="getImage()"></v-avatar>
     </div>
     <span v-if="user.user">{{ user.user.username }}</span>
     <span v-else>Guest</span>
+
+    <div class="user-dropdown" :class="{ none: !user.user }">
+      <button @click="user.logUserOut()">Logout</button>
+    </div>
   </button>
 </template>
 
 <style scoped lang="scss">
-button {
+button.user-widget {
   display: flex;
   align-items: center;
   padding: 0.25rem 1rem;
   transition: all linear 0.25s;
+  position: relative;
 
-  > div {
+  .user-dropdown {
+    visibility: hidden;
+    position: absolute;
+    bottom: -50%;
+    transition: 0.5s ease-in-out visibility;
+    background-color: $color-white;
+    left: 50%;
+    transform: translateX(-50%);
+    @include box-shadow-2;
+
+    button {
+      padding: 0.25rem 1.5rem;
+    }
+
+    &.none {
+      display: none;
+    }
+  }
+
+  .avatar-container {
     scale: 0.65;
     background-color: #e3e8f8;
     border: 4px solid #203562;
@@ -51,13 +80,13 @@ button {
   &:hover {
     background-color: #e3e8f8;
 
-    > div {
+    .avatar-container {
       border-radius: 4px !important;
     }
-  }
-}
 
-.login {
-  pointer-events: none;
+    .user-dropdown {
+      visibility: visible;
+    }
+  }
 }
 </style>

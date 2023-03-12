@@ -2,7 +2,6 @@ import { PiniaActions, PiniaActionTree } from '../piniaTypes';
 import { UserStore } from '.';
 import { ILogin } from './types';
 import { IUser } from '@/_types/user.type';
-import { LocalStorage } from '@/_types/common';
 import pb from '@/services/pb';
 
 export interface UserActions extends PiniaActionTree {
@@ -41,10 +40,9 @@ export const actions: PiniaActions<UserStore> = {
   },
 
   logUserOut(): boolean {
-    this.user = {} as IUser;
-    let user: any = this.user;
+    this.user = null;
     // Clear local storage
-    localStorage.clear();
+    pb.authStore.clear();
     return true;
   },
 };

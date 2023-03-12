@@ -6,7 +6,6 @@ import InputFieldWithValidations from '@/shared/forms/InputFieldWithValidations.
 import { ref } from 'vue';
 import { Form } from 'vee-validate';
 import { useUser } from '@/_store/user';
-import { ILogin } from '@/_store/user/types';
 
 const { t } = useI18n();
 const user = useUser();

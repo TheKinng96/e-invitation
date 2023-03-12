@@ -1,60 +1,20 @@
-import { languages } from '@/locales/index';
 import { createI18n } from 'vue-i18n';
-const messages = Object.assign(languages);
+import { jp } from '@/locales/jp';
+import { en } from '@/locales/en';
+import { cn } from '@/locales/cn';
 
-const numberFormats = {
-  en: {
-    currency: {
-      style: 'currency',
-      currency: 'JPY',
-      currencyDisplay: 'symbol',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 2,
-    },
-    decimal: {
-      style: 'decimal',
-      currency: 'JPY',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    },
-    noDecimal: {
-      style: 'currency',
-      currency: 'JPY',
-      currencyDisplay: 'symbol',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    },
-  },
-  jp: {
-    currency: {
-      style: 'currency',
-      currency: 'JPY',
-      currencyDisplay: 'symbol',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 2,
-    },
-    decimal: {
-      style: 'decimal',
-      currency: 'JPY',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    },
-    noDecimal: {
-      style: 'currency',
-      currency: 'JPY',
-      currencyDisplay: 'symbol',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    },
-  },
-};
+const locale = import.meta.env.VITE_I18N_LOCALE || 'en';
+const fallbackLocale = import.meta.env.VITE_I18N_FALLBACK_LOCALE || 'en';
 
 export default createI18n({
   legacy: false,
   silentFallbackWarn: true,
   warnHtmlMessage: false,
-  locale: import.meta.env.VITE_I18N_LOCALE || 'en',
-  fallbackLocale: import.meta.env.VITE_I18N_FALLBACK_LOCALE || 'en',
-  messages,
-  numberFormats,
+  locale,
+  fallbackLocale,
+  messages: {
+    jp,
+    en,
+    cn,
+  },
 });

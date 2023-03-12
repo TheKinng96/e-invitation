@@ -68,7 +68,10 @@ onBeforeUnmount(() => {
 
       <!-- Location -->
       <Locations />
+
       <!-- Form RESP -->
+      <RSVP />
+
       <!-- Button to support with gift -->
     </v-main>
   </v-app>

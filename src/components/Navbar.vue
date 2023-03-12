@@ -77,6 +77,12 @@ const dotIcon = new URL(`@/assets/img/dots-vertical.svg`, import.meta.url).href;
 </template>
 
 <style lang="scss" scoped>
+#app-bar {
+  @media screen and (min-width: $sm-breakpoint-min) {
+    overflow: visible;
+  }
+}
+
 .login {
   pointer-events: none;
 }
