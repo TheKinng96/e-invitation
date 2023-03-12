@@ -26,7 +26,7 @@ const flipped = ref(false);
     <transition name="flip">
       <div class="card" :key="'' + flipped">
         <div class="front" v-if="!flipped">
-          <div class="card-header">
+          <div class="header">
             <h5>{{ location.area }}</h5>
             <span>{{ location.ceremonyStyle }}</span>
           </div>
@@ -72,7 +72,8 @@ const flipped = ref(false);
   }
 }
 .card {
-  display: block;
+  color: white;
+  padding: 1rem;
   background: rgba(255, 255, 255, 0.31);
   border-radius: 16px;
   position: relative;
@@ -83,6 +84,20 @@ const flipped = ref(false);
   border: 1px solid rgba(255, 255, 255, 0.3);
   cursor: pointer;
   height: 20rem;
+  display: block;
+
+  .front,
+  .back {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .header {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
 }
 
 .flip-enter-active {

@@ -9,8 +9,32 @@ const locations: Array<ILocation> = [
     mapLink: 'https://goo.gl/maps/YvcUAmPaqp7SoDkC9',
     schedule: [
       {
-        time: '08:00',
-        activity: 'Wake up',
+        time: '10:00',
+        activity: 'Gather',
+      },
+      {
+        time: '10:15',
+        activity: 'Drive to Hoyi place',
+      },
+      {
+        time: '10:30',
+        activity: 'Greet and puzzle solving',
+      },
+      {
+        time: '11:30',
+        activity: 'Tea',
+      },
+      {
+        time: '11:45',
+        activity: 'Back to Gen place',
+      },
+      {
+        time: '12:00',
+        activity: 'Ceremony',
+      },
+      {
+        time: '13:00',
+        activity: 'Lunch and free time',
       },
     ],
     qrCode:
@@ -23,8 +47,20 @@ const locations: Array<ILocation> = [
     mapLink: 'https://goo.gl/maps/mkKeiJdt6QgfpcnR7',
     schedule: [
       {
-        time: '08:00',
-        activity: 'Wake up',
+        time: '19:00',
+        activity: 'Gather',
+      },
+      {
+        time: '19:15',
+        activity: 'Toast',
+      },
+      {
+        time: '19:20',
+        activity: 'Enjoy',
+      },
+      {
+        time: '20:00',
+        activity: 'Leave or stay',
       },
     ],
     qrCode:
