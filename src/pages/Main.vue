@@ -7,6 +7,7 @@ import {
   Gallery,
   Locations,
   Modal as InvitationModal,
+  Messages,
   Quotes,
   RSVP,
   Support,
@@ -47,9 +48,32 @@ onMounted(() => {
     <!-- Location -->
     <Locations />
 
+    <!-- Messages board -->
+    <Messages />
+
     <!-- Form RESP -->
     <RSVP />
 
     <!-- Button to support with gift -->
+    <Support />
+
+    <footer class="app-footer">
+      <p>Build by Gen</p>
+    </footer>
   </v-main>
 </template>
+
+<style scoped lang="scss">
+.app-footer {
+  width: 100%;
+  padding: 1rem;
+  background-color: black;
+
+  p {
+    text-align: center;
+    color: $color-white;
+    font-weight: bold;
+    font-family: 'Playfair Display';
+  }
+}
+</style>

@@ -32,7 +32,9 @@ onMounted(async () => {
 });
 
 const updateImageList = async () => {
-  const resultList = await pb.collection('images').getList(1, 10, {});
+  const resultList = await pb.collection('images').getList(1, 10, {
+    expand: 'user',
+  });
   if (resultList.items.length > 0) {
     images.value = resultList.items.map((image) => {
       const url = pb.getFileUrl(image, image.image, { thumb: '0x200' });

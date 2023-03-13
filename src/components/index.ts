@@ -4,5 +4,6 @@ export { default as Locations } from '@/components/Locations.vue';
 export { default as RSVP } from '@/components/RSVP.vue';
 export { default as Support } from '@/components/Support.vue';
 export { default as Modal } from '@/components/Modal.vue';
+export { default as Messages } from '@/components/Messages.vue';
 export { default as Navbar } from '@/components/Navbar.vue';
 export { default as Gallery } from '@/components/Gallery.vue';
