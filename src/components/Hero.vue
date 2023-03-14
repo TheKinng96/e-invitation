@@ -1,7 +1,5 @@
 <script setup lang="ts">
-const deadline = new Date('2023-05-06').toLocaleString('en-US', {
-  timeZone: 'Asia/Singapore',
-});
+const deadline = new Date('2023-05-06');
 </script>
 
 <template>

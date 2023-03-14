@@ -26,6 +26,8 @@ onMounted(async () => {
   });
   // messages.value = records.items as IMessage[];
   console.log(records);
+
+  // Idea like a post with avatar header and content
 });
 </script>
 

@@ -15,7 +15,7 @@ const imgUrl = new URL('@/assets/img/logo.svg', import.meta.url).href;
 
 const appItems = [
   {
-    title: t('page_title.dashboard'),
+    title: 'Main Page',
     value: 'Gallery',
     icon: 'home-02',
   },

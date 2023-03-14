@@ -5,10 +5,15 @@ export const en = {
   // Auth
   email: 'Email Address',
   password: 'Password',
+  register: 'Register',
+  login: 'Login',
 
   // Error
   login_failed: 'Login failed. Please check your email address and password.',
 
   // Validation
-  required: "You haven't write anything here yet."
+  required: "Write me wishes (＾-＾)＿日",
+  passwords_must_match: "Are your passwords matched?",
+  email_format: 'Please feed me with working email address~',
+  max_length: 'Max length is {length}',
 };

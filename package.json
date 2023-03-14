@@ -25,6 +25,7 @@
     "roboto-fontface": "*",
     "vee-validate": "^4.7.2",
     "vue": "^3.2.41",
+    "vue-advanced-cropper": "^2.8.8",
     "vue-gtag": "^2.0.1",
     "vue-i18n": "^9.1.10",
     "vue-images-grid": "^0.1.4",

@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { IUser } from '@/_types/user.type';
 import { ref, onMounted } from 'vue';
-import 'vue-advanced-cropper/dist/style.css';
 
 const props = defineProps<{
   user: IUser;

@@ -15,7 +15,7 @@ export const actions: PiniaActions<UserStore> = {
       let { model: user, token } = JSON.parse(localStorage.getItem('pocketbase_auth') as string);
       this.user = {
         ...user,
-        avatar: `files/${user.collectionName}/${user.id}/${user.avatar}`
+        avatar: pb.getFileUrl(user, user.avatar)
       } as IUser;
       this.token = token;
     }
@@ -31,10 +31,10 @@ export const actions: PiniaActions<UserStore> = {
     }
 
     let { record: user, token } = result;
-
+    console.log(pb.getFileUrl(user, user.avatar));
     this.user = {
       ...user,
-      avatar: `${import.meta.env.VITE_API_URL}/files/${user.collectionName}/${user.id}/${user.avatar}`
+      avatar: pb.getFileUrl(user, user.avatar)
     } as IUser;
     this.token = (token);
   },

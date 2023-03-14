@@ -49,7 +49,6 @@ setLocale({
     max(params) {
       return locale('max_length', { length: params.max });
     },
-    url: locale('missing_http'),
   },
 });
 
