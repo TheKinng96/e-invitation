@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import pb from '@/services/pb';
 import { IUser } from '@/_types/user.type';
 import { ref, onMounted } from 'vue';
 
@@ -48,7 +49,7 @@ const generateRandomColor = (text: string): string => {
   <div class="image" :style="`background-color: ${backgroundColor}`">
     <img
       v-if="user.avatar"
-      :src="user.avatar"
+      :src="pb.getFileUrl(user, user.avatar)"
       :alt="`${user.name}'s avatar'`"
     />
     <span
@@ -63,7 +64,7 @@ const generateRandomColor = (text: string): string => {
 <style lang="scss" scoped>
 .image {
   aspect-ratio: 1;
-  max-width: 278px;
+  max-width: 40px;
   border-radius: 50%;
   overflow: hidden;
 

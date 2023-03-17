@@ -14,18 +14,22 @@ import {
   Navbar,
 } from '@/components';
 import useModal from '@/_store/modal';
+import { useUser } from '@/_store/user';
 
 const route = useRoute();
 const router = useRouter();
 const { t } = useI18n();
 const modal = useModal();
+const user = useUser();
 
 onMounted(() => {
-  modal.open({
-    view: InvitationModal,
-    outsideClick: false,
-    removeCancelButton: true,
-  });
+  if (!user.user) {
+    modal.open({
+      view: InvitationModal,
+      outsideClick: false,
+      removeCancelButton: true,
+    });
+  }
 });
 </script>
 

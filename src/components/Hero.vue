@@ -1,13 +1,14 @@
-<script setup lang="ts">
-const deadline = new Date('2023-05-06');
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div class="hero-container">
     <v-container class="wrapper">
       <div>
         <h3 class="has-text-centered">Days until the big day</h3>
-        <vue3-flip-countdown :deadlineDate="deadline" class="clock" />
+        <vue3-flip-countdown
+          :deadlineDate="new Date('2023-5-6')"
+          class="clock"
+        />
       </div>
     </v-container>
   </div>

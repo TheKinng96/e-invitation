@@ -109,6 +109,7 @@ const register = async (values: any, { resetForm }: any) => {
               :name="field.field"
               class="field"
               :value="field.value ?? ''"
+              autocomplete="off"
             >
               <option v-if="field.options" value="" disabled>
                 Select a Venue
