@@ -39,7 +39,9 @@ function onBackgroundClicked(): void {
     </div>
 
     <div class="modal-card-content">
-      <component :is="view" v-bind="modal.props"></component>
+      <div class="invitation-modal" :class="{ closing: modal.isClosing }">
+        <component :is="view" v-bind="modal.props"></component>
+      </div>
 
       <div class="modal-action">
         <button @click="modal.close()" v-if="!modal.removeCancelButton">
@@ -59,6 +61,26 @@ function onBackgroundClicked(): void {
 </template>
 
 <style lang="scss">
+.invitation-modal {
+  background: white;
+  box-shadow: 0px 2px 8px rgba(34, 41, 149, 0.06),
+    0px 4px 16px rgba(34, 41, 149, 0.04);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 42rem;
+  margin: auto;
+  padding: 2rem;
+  border-radius: 1rem;
+  transition: all ease-in-out 0.5s;
+  max-height: 100svh;
+
+  &.closing {
+    transform: translateY(-50%);
+    opacity: 0;
+  }
+}
+
 .modal-background {
   width: 100vw;
   background-color: rgba(black, 0.5);

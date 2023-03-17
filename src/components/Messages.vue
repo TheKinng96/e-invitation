@@ -4,6 +4,8 @@ import Avatar from '@/shared/components/Avatar.vue';
 import { IUser } from '@/_types/user.type';
 import { ref, onMounted } from 'vue';
 import moment from 'moment';
+import Modal from './messages/Modal.vue';
+import useModal from '@/_store/modal';
 
 export interface IMessage {
   user: string;
@@ -19,6 +21,7 @@ export interface IMessage {
 }
 
 const messages = ref();
+const modal = useModal();
 
 onMounted(async () => {
   const records = await pb.collection('messages').getList(1, 50, {
@@ -27,6 +30,13 @@ onMounted(async () => {
   });
   messages.value = records.items;
 });
+
+const openModal = () => {
+  modal.open({
+    view: Modal,
+    removeCancelButton: true,
+  });
+};
 </script>
 
 <template>
@@ -36,7 +46,11 @@ onMounted(async () => {
 
       <div class="cards-container">
         <div class="cards-wrapper">
-          <div class="message-card" v-for="message in messages">
+          <div
+            class="message-card"
+            v-for="message in messages"
+            @click="openModal()"
+          >
             <div class="header">
               <Avatar :user="message.expand.user" />
               <span>{{ message.expand.user.name }}</span>
@@ -70,6 +84,7 @@ onMounted(async () => {
 
 .cards-container {
   overflow-x: scroll;
+  overflow-y: visible;
 }
 
 .cards-wrapper {
@@ -83,6 +98,11 @@ onMounted(async () => {
     padding: 0.5rem 1rem;
     background: white;
     border-radius: 4px;
+    cursor: zoom-in;
+
+    &:hover {
+      @include box-shadow-3;
+    }
 
     .header {
       display: flex;
