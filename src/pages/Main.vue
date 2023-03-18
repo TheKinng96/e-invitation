@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import {
   Hero,
@@ -16,8 +15,6 @@ import {
 import useModal from '@/_store/modal';
 import { useUser } from '@/_store/user';
 
-const route = useRoute();
-const router = useRouter();
 const { t } = useI18n();
 const modal = useModal();
 const user = useUser();
@@ -56,7 +53,18 @@ onMounted(() => {
     <Messages />
 
     <!-- Form RESP -->
-    <RSVP />
+    <div style="position: relative">
+      <div
+        id="rsvp"
+        style="
+          height: 50px;
+          position: absolute;
+          top: -50px;
+          pointer-events: none;
+        "
+      ></div>
+      <RSVP v-if="!user.getUser" />
+    </div>
 
     <!-- Button to support with gift -->
     <Support />

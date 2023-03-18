@@ -38,55 +38,62 @@ const login = async (values: any) => {
 
   isLoading.value = false;
 };
+
+const scrollToRegister = () => {
+  const rsvp = document.getElementById('rsvp');
+
+  modal.close();
+  if (rsvp) {
+    rsvp.scrollIntoView({ behavior: 'smooth' });
+  }
+};
 </script>
 
 <template>
-  <div class="login-modal" :class="{ closing: modal.isClosing }">
-    <button @click="close()" class="close-button">x</button>
+  <button @click="close()" class="close-button">x</button>
 
-    <h6>Welcome Back!</h6>
-    <div v-if="errorMessage" class="error">
-      {{ errorMessage }}
-    </div>
-    <Form
-      :validation-schema="schema"
-      @submit="login"
-      v-slot="{ meta }"
-      class="form"
-    >
-      <InputFieldWithValidations
-        id="loginEmail"
-        name="email"
-        :label="t('email')"
-        type="email"
-        placeholder="johndoe@gmail.com"
-        :isRequired="true"
-      />
-
-      <InputFieldWithValidations
-        name="password"
-        :label="t('password')"
-        id="loginPassword"
-        :hideDetail="true"
-        :hasNoMargin="true"
-        :isPasswordField="true"
-      />
-
-      <div class="buttons mt-4">
-        <v-btn
-          class="primary-btn login-button button-m button"
-          type="submit"
-          :disabled="!meta.valid || isLoading"
-          :loading="isLoading"
-        >
-          {{ t(`login`) }}
-        </v-btn>
-        <v-btn class="button-m button" :disabled="!meta.valid || isLoading">
-          {{ t(`register`) }}
-        </v-btn>
-      </div>
-    </Form>
+  <h6>Welcome Back!</h6>
+  <div v-if="errorMessage" class="error">
+    {{ errorMessage }}
   </div>
+  <Form
+    :validation-schema="schema"
+    @submit="login"
+    v-slot="{ meta }"
+    class="form"
+  >
+    <InputFieldWithValidations
+      id="loginEmail"
+      name="email"
+      :label="t('email')"
+      type="email"
+      placeholder="johndoe@gmail.com"
+      :isRequired="true"
+    />
+
+    <InputFieldWithValidations
+      name="password"
+      :label="t('password')"
+      id="loginPassword"
+      :hideDetail="true"
+      :hasNoMargin="true"
+      :isPasswordField="true"
+    />
+
+    <div class="buttons mt-4">
+      <v-btn
+        class="primary-btn login-button button-m button"
+        type="submit"
+        :disabled="!meta.valid || isLoading"
+        :loading="isLoading"
+      >
+        {{ t(`login`) }}
+      </v-btn>
+      <v-btn class="button-m button secondary-btn" @click="scrollToRegister()">
+        {{ t(`register`) }}
+      </v-btn>
+    </div>
+  </Form>
 </template>
 
 <style lang="scss" scoped>

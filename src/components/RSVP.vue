@@ -144,6 +144,7 @@ const register = async (values: any, { resetForm }: any) => {
 <style lang="scss" scoped>
 .wrapper {
   background-color: #e3e8f8;
+  padding-bottom: 2rem;
 }
 
 .validation-field {

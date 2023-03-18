@@ -5,9 +5,11 @@ import useModal from '@/_store/modal';
 import useMessage from '@/_store/message';
 import { MessagesResponse, UsersResponse } from '@/_types/pocketbase-types';
 import MessageCard from './messages/MessageCard.vue';
+import { useUser } from '@/_store/user';
 
 const messageStore = useMessage();
 const modal = useModal();
+const user = useUser();
 
 onMounted(async () => {
   await messageStore.loadMessages();
@@ -25,7 +27,7 @@ const openModal = (message: MessagesResponse<{ user: UsersResponse }>) => {
 </script>
 
 <template>
-  <div class="wrapper">
+  <div class="wrapper" :class="{ space: user.getUser }">
     <v-container v-if="messageStore.getMessages.length > 0">
       <h2 class="mb-4">Wishes Board</h2>
 
@@ -45,6 +47,10 @@ const openModal = (message: MessagesResponse<{ user: UsersResponse }>) => {
 <style lang="scss" scoped>
 .wrapper {
   background-color: #e3e8f8;
+
+  &.space {
+    padding: 2rem 0;
+  }
 }
 
 .cards-container {
