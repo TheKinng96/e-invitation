@@ -32,6 +32,7 @@ export const useModal = defineStore("modal", {
      * @param modalData.view vue component to open
      * @param modalData.outsideClick to disable or enable outside click, default true
      * @param modalData.actions buttons action with callback
+     * @param modalData.props props
      * @param modalData.removeCancelButton the cancel button on the overlay, default true
      */
     open(modalData: Modal) {

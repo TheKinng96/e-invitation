@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import pb from '@/services/pb';
-import { IUser } from '@/_types/user.type';
+import { UsersResponse } from '@/_types/pocketbase-types';
 import { ref, onMounted } from 'vue';
 
 const props = defineProps<{
-  user: IUser;
+  user: UsersResponse;
+  width?: number;
 }>();
 const backgroundColor = ref<string>();
 
@@ -46,7 +47,10 @@ const generateRandomColor = (text: string): string => {
 </script>
 
 <template>
-  <div class="image" :style="`background-color: ${backgroundColor}`">
+  <div
+    class="image"
+    :style="`background-color: ${backgroundColor}; max-width: ${props.width}px;`"
+  >
     <img
       v-if="user.avatar"
       :src="pb.getFileUrl(user, user.avatar)"
@@ -67,6 +71,7 @@ const generateRandomColor = (text: string): string => {
   max-width: 40px;
   border-radius: 50%;
   overflow: hidden;
+  width: 10rem;
 
   span {
     display: flex;
