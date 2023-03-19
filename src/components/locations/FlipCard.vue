@@ -1,6 +1,4 @@
 <script lang="ts">
-import axios from 'axios';
-
 interface IActivity {
   time: string;
   activity: string;
@@ -8,6 +6,7 @@ interface IActivity {
 </script>
 
 <script lang="ts" async setup>
+import { useUser } from '@/_store/user';
 import { ref } from 'vue';
 
 export interface ILocation {
@@ -21,6 +20,7 @@ export interface ILocation {
 
 const location = defineProps<ILocation>();
 const flipped = ref(false);
+const user = useUser();
 
 const downloadImage = async (responseUrl: string) => {
   const link = document.createElement('a');
@@ -65,17 +65,23 @@ const downloadImage = async (responseUrl: string) => {
           </div>
         </div>
         <div class="back" v-else>
-          <div class="download-block">
-            <div class="image-container">
-              <img :src="location.qrCode" alt="waze QR code" />
-            </div>
+          <template v-if="user.getUser">
+            <div class="download-block">
+              <div class="image-container">
+                <img :src="location.qrCode" alt="waze QR code" />
+              </div>
 
-            <button @click="downloadImage(location.qrCode)">Download</button>
-          </div>
+              <button @click="downloadImage(location.qrCode)">Download</button>
+            </div>
+          </template>
+
+          <template v-else>
+            <h5>Login to see get the location</h5>
+          </template>
 
           <div class="location-footer">
             <button @click="flipped = !flipped">
-              <Icon icon="flip-backward" type="neutral" />
+              <Icon icon="flip-backward" type="white" />
             </button>
           </div>
         </div>
@@ -90,6 +96,12 @@ const downloadImage = async (responseUrl: string) => {
   align-items: center;
   gap: 1rem;
   transition: all linear 0.25s;
+  margin-top: auto;
+
+  > button {
+    flex: 1;
+    text-align: end;
+  }
 
   .location-icon {
     aspect-ratio: 1;
@@ -143,6 +155,10 @@ const downloadImage = async (responseUrl: string) => {
   border: 1px solid rgba(255, 255, 255, 0.3);
   height: 23rem;
   display: block;
+
+  &.cannot-flip {
+    cursor: auto;
+  }
 
   .front {
     cursor: pointer;

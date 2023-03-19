@@ -11,6 +11,7 @@ import {
   RSVP,
   Support,
   Navbar,
+  Introduction,
 } from '@/components';
 import useModal from '@/_store/modal';
 import { useUser } from '@/_store/user';
@@ -39,6 +40,9 @@ onMounted(() => {
 
     <!-- Quotes -->
     <Quotes />
+
+    <!-- The couples -->
+    <Introduction />
 
     <!-- Gallery about our lives -->
     <Suspense>

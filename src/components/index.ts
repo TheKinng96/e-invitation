@@ -6,4 +6,5 @@ export { default as Support } from '@/components/Support.vue';
 export { default as Modal } from '@/components/Modal.vue';
 export { default as Messages } from '@/components/Messages.vue';
 export { default as Navbar } from '@/components/Navbar.vue';
+export { default as Introduction } from '@/components/Introduction.vue';
 export { default as Gallery } from '@/components/Gallery.vue';

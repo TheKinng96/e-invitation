@@ -3,6 +3,7 @@
 <template>
   <div class="support-section">
     <v-container class="message-block">
+      <h4 class="mb-4">Support Us</h4>
       <p>
         Share the love and gift us your support! Your kind contributions will go
         towards our wedding fund and help us make beautiful memories. Click the
