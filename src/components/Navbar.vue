@@ -47,7 +47,7 @@ const dotIcon = new URL(`@/assets/img/dots-vertical.svg`, import.meta.url).href;
   <v-navigation-drawer
     v-model="openDrawer"
     absolute
-    id="adsist-mobile-drawer"
+    id="mobile-drawer"
     v-if="loader.isMobile"
   >
     <v-list>

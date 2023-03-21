@@ -93,7 +93,7 @@ const { value, handleBlur, errors, meta } = useField(
       :messages="messages"
       :disabled="disabled"
       single-line
-      class="adsist-input-field"
+      class="input-field"
       :class="[
         getClass(errors, meta),
         {
@@ -137,7 +137,7 @@ const { value, handleBlur, errors, meta } = useField(
   }
 }
 
-.adsist-input-field {
+.input-field {
   margin-top: 0.5rem;
   position: relative;
   --v-input-control-height: 48px;
@@ -193,7 +193,7 @@ const { value, handleBlur, errors, meta } = useField(
 }
 
 @media screen and (max-width: $sm-breakpoint-max) {
-  .adsist-input-field {
+  .input-field {
     :deep(.v-input__details) {
       padding-top: 0;
     }
