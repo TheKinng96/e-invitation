@@ -9,6 +9,13 @@ export const useToast = defineStore('toast', {
     };
   },
   actions: {
+    /**
+     * Add toast
+     * @param toast.message Toast message
+     * @param toast.type Toast type
+     * @param toast.duration Toast duration
+     * @param toast.isSnackbar Toast is snackbar or not 
+     */
     append(toast?: IToast) {
       let content = {
         id: Date.now().toString(),

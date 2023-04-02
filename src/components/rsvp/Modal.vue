@@ -12,14 +12,9 @@ const close = () => {
 </script>
 
 <template>
-  <div class="login-modal" :class="{ closing: modal.isClosing }">
-    <button @click="close()" class="close-button">x</button>
-    <h6 class="mb-5">A Confirmation Email has been sent!</h6>
-    <p>Please check your mailbox and verify your email.</p>
-    <p>
-      After verified, you will be able to upload image and edit your message.
-    </p>
-  </div>
+  <h6 class="mb-5">A Confirmation Email has been sent!</h6>
+  <p>Please check your mailbox and verify your email.</p>
+  <p>After verified, you will be able to upload image and edit your message.</p>
 </template>
 
 <style lang="scss" scoped>

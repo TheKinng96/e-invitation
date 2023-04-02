@@ -1,43 +1,17 @@
 <script lang="ts" setup>
 import useModal from '@/_store/modal';
 import { useI18n } from 'vue-i18n';
-import * as yup from 'yup';
-import InputFieldWithValidations from '@/shared/forms/InputFieldWithValidations.vue';
-import { ref } from 'vue';
-import { Form } from 'vee-validate';
-import { useUser } from '@/_store/user';
+import { ref, shallowRef } from 'vue';
+import LoginForm from './LoginModal/LoginForm.vue';
+import ResetPassword from './LoginModal/ResetPassword.vue';
+import ResendVerification from './LoginModal/ResendVerificationForm.vue';
+import { onMounted } from 'vue';
+
+type ComponentName = 'LoginForm' | 'ResetPassword' | 'ResendVerification';
 
 const { t } = useI18n();
-const user = useUser();
-const isLoading = ref(false);
 const modal = useModal();
-const close = () => {
-  modal.setClosingAnimation();
-  setTimeout(() => {
-    modal.close();
-  }, 500);
-};
-const errorMessage = ref<string>();
-
-// Validation rules
-const schema = yup.object({
-  email: yup.string().email().required(),
-  password: yup.string().min(6).required(),
-});
-
-const login = async (values: any) => {
-  isLoading.value = true;
-  errorMessage.value = '';
-
-  try {
-    user.logUserIn(values);
-    close();
-  } catch (err: any) {
-    errorMessage.value = t('login_failed');
-  }
-
-  isLoading.value = false;
-};
+const currentComponent = shallowRef();
 
 const scrollToRegister = () => {
   const rsvp = document.getElementById('rsvp');
@@ -47,75 +21,54 @@ const scrollToRegister = () => {
     rsvp.scrollIntoView({ behavior: 'smooth' });
   }
 };
+
+onMounted(() => {
+  getCurrentComponent('LoginForm');
+});
+
+// Get the correct component to display
+const getCurrentComponent = (modalName: ComponentName) => {
+  // Switch case for the different components and set current component to the correct one
+  switch (modalName) {
+    case 'LoginForm':
+      currentComponent.value = LoginForm;
+      break;
+    case 'ResetPassword':
+      currentComponent.value = ResetPassword;
+      break;
+    case 'ResendVerification':
+      currentComponent.value = ResendVerification;
+      break;
+    default:
+      currentComponent.value = LoginForm;
+      break;
+  }
+};
 </script>
 
 <template>
-  <button @click="close()" class="close-button">x</button>
+  <div class="login-modal-content">
+    <h6>Welcome Back!</h6>
 
-  <h6>Welcome Back!</h6>
-  <div v-if="errorMessage" class="error">
-    {{ errorMessage }}
+    <component
+      :is="currentComponent"
+      :scrollToRegister="scrollToRegister"
+      @updateComponent="getCurrentComponent"
+    />
   </div>
-  <Form
-    :validation-schema="schema"
-    @submit="login"
-    v-slot="{ meta }"
-    class="form"
-  >
-    <InputFieldWithValidations
-      id="loginEmail"
-      name="email"
-      :label="t('email')"
-      type="email"
-      placeholder="johndoe@gmail.com"
-      :isRequired="true"
-    />
-
-    <InputFieldWithValidations
-      name="password"
-      :label="t('password')"
-      id="loginPassword"
-      :hideDetail="true"
-      :hasNoMargin="true"
-      :isPasswordField="true"
-    />
-
-    <div class="buttons mt-4">
-      <v-btn
-        class="primary-btn login-button button-m button"
-        type="submit"
-        :disabled="!meta.valid || isLoading"
-        :loading="isLoading"
-      >
-        {{ t(`login`) }}
-      </v-btn>
-      <v-btn class="button-m button secondary-btn" @click="scrollToRegister()">
-        {{ t(`register`) }}
-      </v-btn>
-    </div>
-  </Form>
 </template>
 
 <style lang="scss" scoped>
-.login-modal {
-  background: white;
-  box-shadow: 0px 2px 8px rgba(34, 41, 149, 0.06),
-    0px 4px 16px rgba(34, 41, 149, 0.04);
+.login-modal-content {
+  width: 100%;
+}
+
+.extra {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  max-width: 42rem;
-  margin: auto;
-  padding: 2rem;
-  border-radius: 1rem;
-  transition: all ease-in-out 0.5s;
-  max-height: 100svh;
-  position: relative;
-
-  &.closing {
-    transform: translateY(-50%);
-    opacity: 0;
-  }
+  align-items: start;
+  color: $color-neutral-400;
+  margin-top: 1rem;
 }
 
 .form {

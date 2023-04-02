@@ -7,6 +7,11 @@ export const en = {
   password: 'Password',
   register: 'Register',
   login: 'Login',
+  forgot_password: 'Forgot password?',
+  resend_verification: 'Resend verification email',
+  remember_credential: 'Remember credentials?',
+  resend_verification_email: 'Resend verification email',
+  reset_password: 'Reset password',
 
   // Error
   login_failed: 'Login failed. Please check your email address and password.',

@@ -5,9 +5,12 @@ import { Form, Field, ErrorMessage } from 'vee-validate';
 import { ref } from 'vue';
 import * as yup from 'yup';
 import RSVPModal from '@/components/rsvp/Modal.vue';
+import { useToast } from '@/_store/toast';
+import { ToastType } from '@/_store/toast/types';
 
 const isLoading = ref(false);
 const modal = useModal();
+const toast = useToast();
 
 const schema = yup.object({
   email: yup.string().email().required(),
@@ -72,7 +75,15 @@ const register = async (values: any, { resetForm }: any) => {
   };
 
   const createdUser = await pb.collection('users').create(data);
-  await pb.collection('users').requestVerification(email);
+
+  try {
+    await pb.collection('users').requestVerification(email);
+  } catch ({ message }) {
+    toast.append({
+      message: message ? (message as string) : 'Something went wrong',
+      type: ToastType.danger,
+    });
+  }
 
   const messageData = {
     user: createdUser.id,
@@ -86,7 +97,7 @@ const register = async (values: any, { resetForm }: any) => {
   modal.open({
     view: RSVPModal,
     outsideClick: true,
-    removeCancelButton: true,
+    removeCancelButton: false,
   });
 };
 </script>
