@@ -1,67 +1,37 @@
 <script lang="ts" setup>
 import pb from '@/services/pb';
 import { UsersResponse } from '@/_types/pocketbase-types';
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 
 const props = defineProps<{
   user: UsersResponse;
   width?: number;
 }>();
-const backgroundColor = ref<string>();
-
-onMounted(() => {
-  backgroundColor.value = generateRandomColor(props.user.name);
-});
 
 const getCapitalAlphabets = (): string => {
   let nameArray = props.user.name.split(' ');
 
   // Name that has two or more letters
   if (nameArray.length > 2) {
-    return [nameArray[0], nameArray[1]].map((name) => name[0]).join('');
+    return [nameArray[0], nameArray[1]].map((name) => name[0]).join('+');
   }
 
-  return nameArray[0].slice(0, 2);
-};
-
-const textColor = (bgColor: any) => {
-  let r = bgColor.r * 255,
-    g = bgColor.g * 255,
-    b = bgColor.b * 255;
-  let yiq = (r * 299 + g * 587 + b * 114) / 1000;
-  return yiq >= 128 ? 'black' : 'white';
-};
-
-const generateRandomColor = (text: string): string => {
-  let hash = 0;
-  for (let i = 0; i < text.length; i++) {
-    hash = text.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  let colour = '#';
-  for (let i = 0; i < 3; i++) {
-    let value = (hash >> (i * 8)) & 0xff;
-    colour += ('00' + value.toString(16)).slice(-2);
-  }
-  return colour;
+  return nameArray[0].slice(0, 2).split('').join('+');
 };
 </script>
 
 <template>
-  <div
-    class="image"
-    :style="`background-color: ${backgroundColor}; max-width: ${props.width}px;`"
-  >
+  <div class="image" :style="`max-width: ${props.width}px;`">
     <img
       v-if="user.avatar"
       :src="pb.getFileUrl(user, user.avatar)"
       :alt="`${user.name}'s avatar'`"
     />
-    <span
+    <img
       v-else
-      :style="`color: ${textColor(backgroundColor)}`"
-      :class="{ 'is-white': textColor(backgroundColor) === 'white' }"
-      >{{ getCapitalAlphabets() }}</span
-    >
+      :src="`https://ui-avatars.com/api/?name=${getCapitalAlphabets()}`"
+      :alt="`${user.name}'s avatar'`"
+    />
   </div>
 </template>
 
