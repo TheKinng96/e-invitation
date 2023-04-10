@@ -68,12 +68,13 @@ function onBackgroundClicked(): void {
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 42rem;
+  max-width: 60rem;
   margin: auto;
   padding: 2rem;
   border-radius: 1rem;
   transition: all ease-in-out 0.5s;
   max-height: 100svh;
+  position: relative;
 
   &.closing {
     transform: translateY(-50%);
@@ -97,7 +98,8 @@ function onBackgroundClicked(): void {
   position: fixed;
   z-index: 10001;
   margin: auto;
-  width: clamp(300px, calc(100vw - 40px), 60rem);
+  width: 100%;
+  max-width: clamp(300px, calc(100vw - 40px), 60rem);
   transform: translate(-50%, -50%);
   left: 50%;
   top: 50%;

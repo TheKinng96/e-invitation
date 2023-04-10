@@ -51,7 +51,7 @@ onMounted(() => {
     </Suspense>
 
     <!-- Location -->
-    <Locations />
+    <!-- <Locations /> -->
 
     <!-- Messages board -->
     <Messages />

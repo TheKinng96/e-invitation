@@ -45,20 +45,20 @@ const fields = [
     type: 'password',
     field: 'password',
   },
-  {
-    label: 'Will you come?',
-    as: 'select',
-    field: 'attending',
-    value: 'Kemaman',
-    options: [
-      'Seremban',
-      'Kemaman',
-      'Kuantan',
-      'Kemaman and Kuantan',
-      'all',
-      'Cannot come',
-    ],
-  },
+  // {
+  //   label: 'Will you come?',
+  //   as: 'select',
+  //   field: 'attending',
+  //   value: 'Kemaman',
+  //   options: [
+  //     'Seremban',
+  //     'Kemaman',
+  //     'Kuantan',
+  //     'Kemaman and Kuantan',
+  //     'all',
+  //     'Cannot come',
+  //   ],
+  // },
 ];
 
 const register = async (values: any, { resetForm }: any) => {

@@ -3,8 +3,10 @@ import { MessagesResponse, UsersResponse } from '@/_types/pocketbase-types';
 import useMessage from '@/_store/message';
 import MessageCard from './MessageCard.vue';
 import { ref } from 'vue';
+import useModal from '@/_store/modal';
 
 const messageStore = useMessage();
+const modal = useModal();
 
 const props = defineProps<{
   currentMessage: MessagesResponse<{ user: UsersResponse }>;
@@ -21,6 +23,9 @@ const updateMessage = (message: MessagesResponse<{ user: UsersResponse }>) => {
 
 <template>
   <div class="card-wrapper">
+    <button class="close-btn" @click="modal.close()">
+      <Icon icon="cross" />
+    </button>
     <MessageCard
       :message="displayMessage"
       class="modal-message current"
@@ -42,6 +47,15 @@ const updateMessage = (message: MessagesResponse<{ user: UsersResponse }>) => {
 </template>
 
 <style lang="scss" scoped>
+.close-btn {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  padding: 1rem;
+  background: none;
+  border: none;
+}
+
 .modal-message {
   flex-direction: column;
   cursor: pointer;
