@@ -1,7 +1,10 @@
 <script lang="ts" async setup>
 import pb from '@/services/pb';
+import { useI18n } from 'vue-i18n';
 import { ref, onMounted } from 'vue';
 import { useUser } from '@/_store/user';
+import { useToast } from '@/_store/toast';
+import { ToastType } from '@/_store/toast/types';
 
 interface IImage {
   collectionId: string;
@@ -16,6 +19,8 @@ interface IImage {
   aspect_ratio: string;
 }
 const fileInput = ref();
+const toast = useToast();
+const { t } = useI18n();
 const addPhoto = () => {
   fileInput.value.click();
 };
@@ -36,7 +41,7 @@ const updateImageList = async () => {
     expand: 'user',
   });
   if (resultList.items.length > 0) {
-    images.value = resultList.items.map((image) => {
+    images.value = resultList.items.map((image: any) => {
       const url = pb.getFileUrl(image, image.image, { thumb: '0x200' });
       return {
         ...image,
@@ -49,8 +54,23 @@ const updateImageList = async () => {
 };
 
 const onImageUploaded = async (event: any) => {
+  var userId = null;
+  try {
+    userId = user.getUser.id;
+  } catch ({ message }) {
+    console.error(message);
+    toast.append({
+      message: t(`image_upload_error.please_login`),
+      type: ToastType.danger,
+    });
+    return;
+  }
+
+  await uploadImage(event.target.files[0]);
+};
+
+const uploadImage = async (file: any) => {
   let formData = new FormData();
-  const file = event.target.files[0];
 
   // Get image aspect ratio
   let dimensions = new Image();
@@ -77,39 +97,28 @@ const onImageUploaded = async (event: any) => {
 
   await pb.collection('images').create(formData);
   updateImageList();
-};
+}
 </script>
 
 <template>
   <div class="block-container">
     <v-container class="wrapper" ref="imageContainer">
-      <div
-        v-if="images.length > 0"
-        v-for="image in images"
-        :style="`aspect-ratio: ${image.aspect_ratio};`"
-        class="image-container"
-        :key="image.id"
-      >
+      <div v-if="images.length > 0" v-for="image in images" :style="`aspect-ratio: ${image.aspect_ratio};`"
+        class="image-container" :key="image.id">
         <img :src="image.image_link" :key="updatedAt" />
       </div>
       <button @click="addPhoto()" class="add-button">Add Photo</button>
     </v-container>
     <button class="show-more">Show more</button>
   </div>
-  <input
-    type="file"
-    multiple
-    @change="onImageUploaded"
-    class="hidden"
-    ref="fileInput"
-    accept="image/*"
-  />
+  <input type="file" multiple @change="onImageUploaded" class="hidden" ref="fileInput" accept="image/*" />
 </template>
 
 <style lang="scss" scoped>
 .hidden {
   display: none;
 }
+
 .block-container {
   background-color: $color-neutral-100;
   position: relative;
@@ -124,7 +133,7 @@ const onImageUploaded = async (event: any) => {
   columns: var(--columns);
   gap: var(--gap);
 
-  > * {
+  >* {
     break-inside: avoid;
     margin-bottom: var(--gap);
   }
@@ -145,7 +154,7 @@ const onImageUploaded = async (event: any) => {
     grid-template-rows: masonry;
     grid-auto-flow: dense;
 
-    > * {
+    >* {
       margin-bottom: 0em;
     }
   }
