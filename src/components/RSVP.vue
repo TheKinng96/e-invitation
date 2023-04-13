@@ -14,10 +14,8 @@ const toast = useToast();
 
 const schema = yup.object({
   email: yup.string().email().required(),
-  password: yup.string().min(6).required(),
   name: yup.string().required(),
   message: yup.string().required(),
-  attending: yup.string().required(),
 });
 
 const fields = [
@@ -39,38 +37,20 @@ const fields = [
     type: 'email',
     field: 'email',
   },
-  {
-    label: 'Password',
-    as: 'input',
-    type: 'password',
-    field: 'password',
-  },
-  // {
-  //   label: 'Will you come?',
-  //   as: 'select',
-  //   field: 'attending',
-  //   value: 'Kemaman',
-  //   options: [
-  //     'Seremban',
-  //     'Kemaman',
-  //     'Kuantan',
-  //     'Kemaman and Kuantan',
-  //     'all',
-  //     'Cannot come',
-  //   ],
-  // },
 ];
 
 const register = async (values: any, { resetForm }: any) => {
   isLoading.value = true;
 
-  const { email, name, password, attending, message } = values;
+  const { email, name, message } = values;
+  // Generate a strong password of 8 characters
+  const password = Math.random().toString(36).slice(-8);
+
   const data = {
     email: email,
     emailVisibility: true,
     password: password,
     passwordConfirm: password,
-    attending: attending,
     name,
   };
 
@@ -78,7 +58,7 @@ const register = async (values: any, { resetForm }: any) => {
 
   try {
     await pb.collection('users').requestVerification(email);
-  } catch ({ message }) {
+  } catch ({ message }: any) {
     toast.append({
       message: message ? (message as string) : 'Something went wrong',
       type: ToastType.danger,
@@ -119,19 +99,8 @@ const register = async (values: any, { resetForm }: any) => {
               :type="field.type ?? ''"
               :name="field.field"
               class="field"
-              :value="field.value ?? ''"
               autocomplete="off"
             >
-              <option v-if="field.options" value="" disabled>
-                Select a Venue
-              </option>
-              <option
-                v-if="field.options"
-                v-for="option in field.options"
-                :value="option"
-              >
-                {{ option }}
-              </option>
             </Field>
             <ErrorMessage :name="field.field" class="error-message" />
           </div>
