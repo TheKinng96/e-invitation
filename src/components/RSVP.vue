@@ -52,6 +52,7 @@ const register = async (values: any, { resetForm }: any) => {
     password: password,
     passwordConfirm: password,
     name,
+    initial_password: password,
   };
 
   const createdUser = await pb.collection('users').create(data);
