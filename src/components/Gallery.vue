@@ -3,62 +3,43 @@ import pb from '@/services/pb';
 import { useI18n } from 'vue-i18n';
 import { ref, onMounted } from 'vue';
 import { useUser } from '@/_store/user';
+import { useGallery } from '@/_store/gallery';
 import { useToast } from '@/_store/toast';
 import { ToastType } from '@/_store/toast/types';
+import LoginModal from './navbar/LoginModal.vue';
+import useModal from '@/_store/modal';
 
-interface IImage {
-  collectionId: string;
-  collectionName: string;
-  created: string;
-  id: string;
-  image_link: string;
-  title: string;
-  updated: string;
-  user: string;
-  expand?: any;
-  aspect_ratio: string;
-}
 const fileInput = ref();
 const toast = useToast();
 const { t } = useI18n();
+const galleryStore = useGallery();
+const userStore = useUser();
+const imageContainer = ref();
+const modal = useModal();
+
 const addPhoto = () => {
+  if (!userStore.getUserId) {
+    toast.append({
+      message: t('login_is_required'),
+      type: ToastType.warning
+    })
+    modal.open({
+      view: LoginModal
+    })
+    return;
+  }
   fileInput.value.click();
 };
 
-const user = useUser();
-const imageContainer = ref();
-
-// fetch a paginated records list
-const images = ref<Array<any>>([]);
-const updatedAt = ref<number>(new Date().getTime());
-
 onMounted(async () => {
-  updateImageList();
+  await galleryStore.loadGallery();
 });
 
-const updateImageList = async () => {
-  const resultList = await pb.collection('images').getList(1, 10, {
-    expand: 'user',
-  });
-  if (resultList.items.length > 0) {
-    images.value = resultList.items.map((image: any) => {
-      const url = pb.getFileUrl(image, image.image, { thumb: '0x200' });
-      return {
-        ...image,
-        image_link: url,
-      };
-    });
-  }
-
-  updatedAt.value = new Date().getTime();
-};
-
 const onImageUploaded = async (event: any) => {
-  var userId = null;
+  let userId;
   try {
-    userId = user.getUser.id;
-  } catch ({ message }) {
-    console.error(message);
+    userId = userStore.getUser.id;
+  } catch ({ message }: any) {
     toast.append({
       message: t(`image_upload_error.please_login`),
       type: ToastType.danger,
@@ -70,48 +51,37 @@ const onImageUploaded = async (event: any) => {
 };
 
 const uploadImage = async (file: any) => {
-  let formData = new FormData();
-
-  // Get image aspect ratio
-  let dimensions = new Image();
-  let aspectRatio = '';
-  dimensions.src = URL.createObjectURL(file);
-  dimensions.onload = function () {
-    let { width, height }: any = this;
-
-    if (width > height) {
-      aspectRatio = `${width / height} / 1`;
-    } else {
-      aspectRatio = `1 / ${height / width}`;
-    }
-  };
-
-  formData.append('image', file);
-  formData.append(
-    'image_link',
-    'https://gen-wedding-images.s3.ap-northeast-1.amazonaws.com/G3ND0925.JPG',
-  );
-  formData.append('user', user.getUser.id);
-  formData.append('title', 'image-name');
-  formData.append('aspect_ratio', aspectRatio);
-
-  await pb.collection('images').create(formData);
-  updateImageList();
-}
+  await galleryStore.uploadImage(file);
+};
 </script>
 
 <template>
   <div class="block-container">
     <v-container class="wrapper" ref="imageContainer">
-      <div v-if="images.length > 0" v-for="image in images" :style="`aspect-ratio: ${image.aspect_ratio};`"
-        class="image-container" :key="image.id">
-        <img :src="image.image_link" :key="updatedAt" />
+      <div
+        v-if="galleryStore.getImages.length > 0"
+        v-for="image in galleryStore.getImages"
+        :style="`aspect-ratio: ${image.aspect_ratio};`"
+        class="image-container"
+        :key="image.id"
+      >
+        <img
+          :src="pb.getFileUrl(image, image.image, { thumb: '0x200' })"
+          :key="updatedAt"
+        />
       </div>
-      <button @click="addPhoto()" class="add-button">Add Photo</button>
+      <button @click="addPhoto()" class="add-button">{{t('gallery.add_photo')}}</button>
     </v-container>
-    <button class="show-more">Show more</button>
+    <button class="show-more">{{t('gallery.show_more')}}</button>
   </div>
-  <input type="file" multiple @change="onImageUploaded" class="hidden" ref="fileInput" accept="image/*" />
+  <input
+    type="file"
+    multiple
+    @change="onImageUploaded"
+    class="hidden"
+    ref="fileInput"
+    accept="image/*"
+  />
 </template>
 
 <style lang="scss" scoped>
@@ -133,7 +103,7 @@ const uploadImage = async (file: any) => {
   columns: var(--columns);
   gap: var(--gap);
 
-  >* {
+  > * {
     break-inside: avoid;
     margin-bottom: var(--gap);
   }
@@ -154,7 +124,7 @@ const uploadImage = async (file: any) => {
     grid-template-rows: masonry;
     grid-auto-flow: dense;
 
-    >* {
+    > * {
       margin-bottom: 0em;
     }
   }

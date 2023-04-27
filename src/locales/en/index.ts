@@ -12,6 +12,7 @@ export const en = {
   remember_credential: 'Remember credentials?',
   resend_verification_email: 'Resend verification email',
   reset_password: 'Reset password',
+  login_is_required: 'Please login to continue',
 
   // Error
   login_failed: 'Login failed. Please check your email address and password.',
@@ -24,4 +25,10 @@ export const en = {
   passwords_must_match: "Are your passwords matched?",
   email_format: 'Please feed me with working email address~',
   max_length: 'Max length is {length}',
+
+  // Gallery
+  gallery: {
+    add_photo: 'Add Photo',
+    show_more: 'Show More',
+  }
 };

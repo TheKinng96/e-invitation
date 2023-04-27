@@ -7,7 +7,6 @@ export enum Collections {
 	Images = "images",
 	Likes = "likes",
 	Messages = "messages",
-	Profiles = "profiles",
 	Users = "users",
 }
 
@@ -45,7 +44,7 @@ export type ImagesRecord = {
 	title?: string
 	aspect_ratio?: string
 	height?: number
-	image?: string
+	image: string
 }
 
 export type LikesRecord = {
@@ -56,11 +55,6 @@ export type LikesRecord = {
 export type MessagesRecord = {
 	text: HTMLString
 	user: RecordIdString
-}
-
-export type ProfilesRecord = {
-	name: string
-	avatar?: string
 }
 
 export type UsersRecord = {
@@ -74,7 +68,6 @@ export type CommentsResponse<Texpand = unknown> = CommentsRecord & BaseSystemFie
 export type ImagesResponse<Texpand = unknown> = ImagesRecord & BaseSystemFields<Texpand>
 export type LikesResponse<Texpand = unknown> = LikesRecord & BaseSystemFields<Texpand>
 export type MessagesResponse<Texpand = unknown> = MessagesRecord & BaseSystemFields<Texpand>
-export type ProfilesResponse = ProfilesRecord & BaseSystemFields
 export type UsersResponse = UsersRecord & AuthSystemFields
 
 // Types containing all Records and Responses, useful for creating typing helper functions
@@ -84,7 +77,6 @@ export type CollectionRecords = {
 	images: ImagesRecord
 	likes: LikesRecord
 	messages: MessagesRecord
-	profiles: ProfilesRecord
 	users: UsersRecord
 }
 
@@ -93,6 +85,5 @@ export type CollectionResponses = {
 	images: ImagesResponse
 	likes: LikesResponse
 	messages: MessagesResponse
-	profiles: ProfilesResponse
 	users: UsersResponse
 }
