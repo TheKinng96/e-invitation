@@ -21,11 +21,11 @@ const addPhoto = () => {
   if (!userStore.getUserId) {
     toast.append({
       message: t('login_is_required'),
-      type: ToastType.warning
-    })
+      type: ToastType.warning,
+    });
     modal.open({
-      view: LoginModal
-    })
+      view: LoginModal,
+    });
     return;
   }
   fileInput.value.click();
@@ -67,12 +67,14 @@ const uploadImage = async (file: any) => {
       >
         <img
           :src="pb.getFileUrl(image, image.image, { thumb: '0x200' })"
-          :key="updatedAt"
+          :alt="image.image"
         />
       </div>
-      <button @click="addPhoto()" class="add-button">{{t('gallery.add_photo')}}</button>
+      <button @click="addPhoto()" class="add-button">
+        {{ t('gallery.add_photo') }}
+      </button>
     </v-container>
-    <button class="show-more">{{t('gallery.show_more')}}</button>
+    <button class="show-more">{{ t('gallery.show_more') }}</button>
   </div>
   <input
     type="file"
