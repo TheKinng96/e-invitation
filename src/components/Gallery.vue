@@ -1,7 +1,7 @@
 <script lang="ts" async setup>
 import pb from '@/services/pb';
 import { useI18n } from 'vue-i18n';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useUser } from '@/_store/user';
 import { useGallery } from '@/_store/gallery';
 import { useToast } from '@/_store/toast';
@@ -16,6 +16,7 @@ const galleryStore = useGallery();
 const userStore = useUser();
 const imageContainer = ref();
 const modal = useModal();
+const images = computed(() => galleryStore.getImages);
 
 const addPhoto = () => {
   if (!userStore.getUserId) {
@@ -32,7 +33,7 @@ const addPhoto = () => {
 };
 
 onMounted(async () => {
-  await galleryStore.loadGallery();
+  await galleryStore.loadGallery(10);
 });
 
 const onImageUploaded = async (event: any) => {
@@ -59,14 +60,14 @@ const uploadImage = async (file: any) => {
   <div class="block-container">
     <v-container class="wrapper" ref="imageContainer">
       <div
-        v-if="galleryStore.getImages.length > 0"
-        v-for="image in galleryStore.getImages"
+        v-if="images.length > 0"
+        v-for="image in images"
         :style="`aspect-ratio: ${image.aspect_ratio};`"
         class="image-container"
         :key="image.id"
       >
         <img
-          :src="pb.getFileUrl(image, image.image, { thumb: '0x200' })"
+          :src="pb.getFileUrl(image, image.image, { thumb: '0x500' })"
           :alt="image.image"
         />
       </div>

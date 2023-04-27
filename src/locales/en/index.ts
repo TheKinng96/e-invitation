@@ -1,6 +1,8 @@
 export const en = {
   // Modal
-  cancel: 'cancel',
+  modal: {
+    cancel: 'cancel',
+  },
 
   // Auth
   email: 'Email Address',

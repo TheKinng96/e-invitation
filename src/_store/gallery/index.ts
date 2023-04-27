@@ -18,15 +18,11 @@ export const useGallery = defineStore("gallery", {
   }),
   actions: {
     async loadGallery(imageToLoad: number = 50) {
-      if (this.readPage <= this.totalPages) {
-        const result = await pb.collection(Collections.Images).getList<ImagesResponse<{ user: UsersResponse; }>>(this.readPage, imageToLoad, {
-          sort: 'created',
-          expand: 'user',
-        });
-        this.images = [...result.items];
-        this.totalPages = result.totalPages;
-        this.readPage++;
-      }
+      const result = await pb.collection(Collections.Images).getList<ImagesResponse<{ user: UsersResponse; }>>(this.readPage, imageToLoad, {
+        sort: 'created',
+        expand: 'user',
+      });
+      this.images = [...result.items];
     },
     async uploadImage(file: any,) {
       const userStore = useUser();
@@ -46,15 +42,13 @@ export const useGallery = defineStore("gallery", {
         }
       };
 
-      console.log(file);
-
       formData.append('image', file);
       formData.append('user', userStore.getUserId);
-      formData.append('title', 'image-name');
+      formData.append('title', file.name);
       formData.append('aspect_ratio', aspectRatio);
 
       await pb.collection(Collections.Images).create(formData);
-      this.loadGallery();
+      await this.loadGallery(10);
     }
   },
   getters: {
