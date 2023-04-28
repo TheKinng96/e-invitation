@@ -8,6 +8,8 @@ import {
 } from '@/_types/pocketbase-types';
 import pb from '@/services/pb';
 import Avatar from '@/shared/components/Avatar.vue';
+import { useI18n } from 'vue-i18n';
+import moment from 'moment';
 
 interface IImageModal extends ImagesResponse<UsersResponse> {
   user: RecordIdString;
@@ -23,6 +25,7 @@ interface IImageModal extends ImagesResponse<UsersResponse> {
   collectionName: Collections;
 }
 const props = defineProps<IImageModal>();
+const { t } = useI18n();
 </script>
 
 <template>
@@ -34,7 +37,15 @@ const props = defineProps<IImageModal>();
     <div class="information-container">
       <div class="user-info">
         <div class="info-header">
-          <Avatar :user="props.expand.user" />
+          <Avatar :user="props.expand.user" :width="50" />
+
+          <div>
+            <p>{{ props.expand.user.name }}</p>
+            <span>{{
+              t('gallery.posted_at') +
+              moment(props.created).format('YYYY-MM-DD')
+            }}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -57,6 +68,35 @@ const props = defineProps<IImageModal>();
   }
 
   .information-container {
+    width: max-content;
+
+    .user-info {
+      width: max-content;
+
+      .info-header {
+        display: flex;
+        gap: 0.5rem;
+
+        > div {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+
+          > p {
+            text-transform: capitalize;
+            font-size: 1.2em;
+            color: $color-neutral-800;
+            font-weight: bold;
+            line-height: 1rem;
+          }
+
+          > span {
+            font-size: 0.8em;
+            color: $color-neutral-300;
+          }
+        }
+      }
+    }
   }
 }
 </style>

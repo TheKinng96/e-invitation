@@ -32,5 +32,6 @@ export const en = {
   gallery: {
     add_photo: 'Add Photo',
     show_more: 'Show More',
+    posted_at: 'Posted: ',
   }
 };

@@ -1,11 +1,14 @@
 <script lang="ts" setup>
 import pb from '@/services/pb';
 import { UsersResponse } from '@/_types/pocketbase-types';
+import { computed } from 'vue';
 
 const props = defineProps<{
   user: UsersResponse;
   width?: number;
 }>();
+
+const maxWidth = computed(() => (props.width ? `${props.width}px` : '40px'));
 
 const getCapitalAlphabets = (): string => {
   let nameArray = props.user.name.split(' ');
@@ -20,7 +23,7 @@ const getCapitalAlphabets = (): string => {
 </script>
 
 <template>
-  <div class="image" :style="`max-width: ${props.width}px;`">
+  <div class="image">
     <img
       v-if="user.avatar"
       :src="pb.getFileUrl(user, user.avatar)"
@@ -37,10 +40,14 @@ const getCapitalAlphabets = (): string => {
 <style lang="scss" scoped>
 .image {
   aspect-ratio: 1;
-  max-width: 40px;
+  max-width: v-bind(maxWidth);
   border-radius: 50%;
   overflow: hidden;
   width: 10rem;
+
+  img {
+    height: 100%;
+  }
 
   span {
     display: flex;
