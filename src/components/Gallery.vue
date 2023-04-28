@@ -54,7 +54,6 @@ const onImageUploaded = async (event: any) => {
 };
 
 const openImageModal = (image: ImagesResponse) => {
-
   modal.open({
     view: ImageModal,
     props: image,
@@ -71,15 +70,14 @@ const openImageModal = (image: ImagesResponse) => {
         :style="`aspect-ratio: ${image.aspect_ratio};`"
         class="image-container"
         :key="image.id"
+        @click="openImageModal(image)"
       >
         <img
           :src="pb.getFileUrl(image, image.image, { thumb: '0x500' })"
           :alt="image.image"
         />
-        <span>
-          <button @click="openImageModal(image)">
-            <Icon icon="zoom-in" />
-          </button>
+        <span class="image-name">
+          {{ image.title }}
         </span>
       </div>
       <button @click="addPhoto()" class="add-button">
@@ -99,6 +97,12 @@ const openImageModal = (image: ImagesResponse) => {
 </template>
 
 <style lang="scss" scoped>
+.image-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .hidden {
   display: none;
 }
@@ -161,6 +165,7 @@ const openImageModal = (image: ImagesResponse) => {
 .image-container {
   position: relative;
   height: max-content;
+  cursor: pointer;
 
   img {
     width: 100%;
@@ -180,6 +185,7 @@ const openImageModal = (image: ImagesResponse) => {
     border-color: unset;
     opacity: 0;
     transition: all ease-in 0.5s;
+    width: 85%;
   }
 
   &:hover {

@@ -42,9 +42,12 @@ export const useGallery = defineStore("gallery", {
         }
       };
 
+      // remove image extension
+      let fileName = file.name.split('.').slice(0, -1).join('.');
+
       formData.append('image', file);
       formData.append('user', userStore.getUserId);
-      formData.append('title', file.name);
+      formData.append('title', fileName);
       formData.append('aspect_ratio', aspectRatio);
 
       await pb.collection(Collections.Images).create(formData);

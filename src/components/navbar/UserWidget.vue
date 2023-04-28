@@ -80,6 +80,10 @@ button.user-widget {
     border: 4px solid #203562;
     border-radius: 50% !important;
     transition: all linear 0.25s;
+
+    :deep(.v-img__img--contain) {
+      object-fit: cover;
+    }
   }
 
   &:hover {
