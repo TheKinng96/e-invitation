@@ -3,20 +3,21 @@ import pb from '@/services/pb';
 import useModal from '@/_store/modal';
 import { useUser } from '@/_store/user';
 import LoginModal from './LoginModal.vue';
+import { computed } from 'vue';
 
-const user = useUser();
+const userStore = useUser();
 const modal = useModal();
 
-const getImage = () => {
-  if (user.user && user.user.avatar) {
-    return pb.getFileUrl(user.user, user.user.avatar);
+const getImage = computed(() => {
+  if (userStore.getHasLogin && userStore.user.avatar) {
+    return pb.getFileUrl(userStore.user, userStore.user.avatar);
   }
 
   return new URL(`@/assets/img/avatar.svg`, import.meta.url).href;
-};
+});
 
 const openModal = () => {
-  if (user.user) {
+  if (userStore.getHasLogin) {
     return;
   }
 
@@ -31,13 +32,17 @@ const openModal = () => {
 <template>
   <button @click="openModal()" class="user-widget">
     <div class="avatar-container">
-      <v-avatar :image="getImage()"></v-avatar>
+      <v-avatar :image="getImage"></v-avatar>
     </div>
-    <span v-if="user.user">{{ user.user.username }}</span>
+    <span v-if="userStore.user">{{ userStore.user.username }}</span>
     <span v-else>Guest</span>
 
-    <div class="user-dropdown" :class="{ none: !user.user }">
-      <button @click="user.logUserOut()">Logout</button>
+    <div
+      class="user-dropdown"
+      :class="{ none: !userStore.user }"
+      v-if="userStore.getHasLogin"
+    >
+      <button @click="userStore.logUserOut()">Logout</button>
     </div>
   </button>
 </template>

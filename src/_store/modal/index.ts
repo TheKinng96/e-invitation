@@ -24,6 +24,7 @@ export const useModal = defineStore("modal", {
     outsideClick: true,
     view: {},
     actions: [],
+    props: {},
     closing: false,
   }),
   actions: {

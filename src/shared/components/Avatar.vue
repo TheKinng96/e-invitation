@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import pb from '@/services/pb';
 import { UsersResponse } from '@/_types/pocketbase-types';
-import { ref } from 'vue';
 
 const props = defineProps<{
   user: UsersResponse;

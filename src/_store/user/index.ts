@@ -50,6 +50,9 @@ export const useUser = defineStore("user", {
     },
     getUserId(): string {
       return this.user?.id ?? '';
+    },
+    getHasLogin(): boolean {
+      return Object.values(this.user).length > 0;
     }
   }
 });

@@ -8,6 +8,8 @@ import { useToast } from '@/_store/toast';
 import { ToastType } from '@/_store/toast/types';
 import LoginModal from './navbar/LoginModal.vue';
 import useModal from '@/_store/modal';
+import { ImagesResponse } from '@/_types/pocketbase-types';
+import ImageModal from '@/components/gallery/ImageModal.vue';
 
 const fileInput = ref();
 const toast = useToast();
@@ -48,11 +50,15 @@ const onImageUploaded = async (event: any) => {
     return;
   }
 
-  await uploadImage(event.target.files[0]);
+  await galleryStore.uploadImage(event.target.files[0]);
 };
 
-const uploadImage = async (file: any) => {
-  await galleryStore.uploadImage(file);
+const openImageModal = (image: ImagesResponse) => {
+
+  modal.open({
+    view: ImageModal,
+    props: image,
+  });
 };
 </script>
 
@@ -70,6 +76,11 @@ const uploadImage = async (file: any) => {
           :src="pb.getFileUrl(image, image.image, { thumb: '0x500' })"
           :alt="image.image"
         />
+        <span>
+          <button @click="openImageModal(image)">
+            <Icon icon="zoom-in" />
+          </button>
+        </span>
       </div>
       <button @click="addPhoto()" class="add-button">
         {{ t('gallery.add_photo') }}
