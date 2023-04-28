@@ -69,6 +69,8 @@ const { t } = useI18n();
 
   .information-container {
     width: max-content;
+    min-width: 20rem;
+    max-width: 20rem;
 
     .user-info {
       width: max-content;
